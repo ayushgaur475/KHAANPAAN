@@ -78,7 +78,7 @@ npm run dev
 
 | Customer Menu | Admin Dashboard |
 |---|---|
-| ![Menu](frontend/src/assets/food_1.png) | ![Admin](frontend/src/assets/parcel_icon.png) |
+| ![Menu]("C:\Users\Ayush\Videos\Screen Recordings\Screen Recording 2026-04-30 015147.mp4") | ![Admin](frontend/src/assets/parcel_icon.png) |
 
 ---
 
@@ -89,4 +89,4 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 This project is licensed under the MIT License.
 
 ---
-*Built with ❤️ by Ayush Gaur & Antigravity AI*
+*Built with ❤️ by Ayush Gaur *
