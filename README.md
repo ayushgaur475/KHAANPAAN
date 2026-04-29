@@ -77,7 +77,7 @@ npm run dev
 
 ### 🎬 Project Demo
 <p align="center">
-  <video src="frontend/src/assets/myproject1.mp4" width="90%" controls></video>
+  <video src="https://github.com/ayushgaur475/KHAANPAAN/blob/main/frontend/src/assets/myproject1.mp4?raw=true" width="90%" controls></video>
 </p>
 
 
