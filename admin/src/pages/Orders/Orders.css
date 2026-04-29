@@ -1,0 +1,149 @@
+.orders-page {
+    flex: 1;
+    padding: 40px;
+}
+
+.orders-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.orders-header {
+    margin-bottom: 30px;
+}
+
+.order-count {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.order-card {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-card-header {
+    display: grid;
+    grid-template-columns: 60px 1fr 150px;
+    gap: 25px;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.parcel-img-wrapper {
+    width: 60px;
+    height: 60px;
+    background: var(--bg-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+}
+
+.parcel-img-wrapper img {
+    width: 35px;
+    height: auto;
+}
+
+.order-items-list {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.customer-name {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.order-amount-status {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.order-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.status-pill {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Status Colors */
+.status-pill.order-placed { background: #e0f2fe; color: #0369a1; }
+.status-pill.preparing { background: #fef3c7; color: #92400e; }
+.status-pill.ready-for-pickup { background: #dcfce7; color: #166534; }
+.status-pill.out-for-delivery { background: #f3e8ff; color: #7e22ce; }
+.status-pill.delivered { background: #dcfce7; color: #166534; }
+.status-pill.cancelled { background: #fee2e2; color: #991b1b; }
+
+.order-card-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.detail-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.address-info p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.phone-number {
+    margin-top: 5px;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.status-select {
+    width: 100%;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .order-card-header {
+        grid-template-columns: 50px 1fr;
+    }
+    
+    .order-amount-status {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        margin-top: 10px;
+    }
+    
+    .order-card-details {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}

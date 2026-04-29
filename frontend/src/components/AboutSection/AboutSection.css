@@ -1,0 +1,258 @@
+.about-section {
+    position: relative;
+    padding: 100px 5vw;
+    text-align: center;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.about-content {
+    max-width: 800px;
+    z-index: 10;
+}
+
+.about-title {
+    font-size: max(3.5vw, 28px);
+    font-weight: 700;
+    color: #ff4c24;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.about-title span {
+    color: var(--text-dark);
+}
+
+.about-description {
+    font-size: max(1.2vw, 25px);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.about-description-sub {
+    font-size: max(1vw, 14px);
+    color: #888;
+    font-style: italic;
+}
+
+/* Floating Elements */
+.about-floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.twisted-thread {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    z-index: 0;
+}
+
+.thread-path {
+    fill: none;
+    stroke: #ff4c24;
+    stroke-width: 2;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawThread 10s linear infinite, pulseThread 4s ease-in-out infinite;
+}
+
+@keyframes drawThread {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes pulseThread {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        stroke-width: 2;
+    }
+
+    50% {
+        opacity: 1;
+        stroke-width: 3;
+    }
+}
+
+.floating-item {
+    position: absolute;
+    width: 120px;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+    animation: float 6s ease-in-out infinite;
+}
+
+.item-1 {
+    top: 15%;
+    left: 10%;
+    width: 140px;
+    animation-delay: 0s;
+}
+
+.item-2 {
+    top: 10%;
+    right: 12%;
+    width: 130px;
+    animation-delay: 1s;
+    transform: rotate(15deg);
+}
+
+.item-3 {
+    bottom: 25%;
+    left: 8%;
+    width: 150px;
+    animation-delay: 2s;
+    transform: rotate(-10deg);
+}
+
+.item-4 {
+    bottom: 15%;
+    right: 10%;
+    width: 140px;
+    animation-delay: 3s;
+}
+
+.item-5 {
+    top: 40%;
+    right: 5%;
+    width: 120px;
+    animation-delay: 1.5s;
+    transform: rotate(20deg);
+}
+
+.leaf-element {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+    clip-path: ellipse(50% 20% at 50% 50%);
+    opacity: 0.4;
+    animation: float 5s ease-in-out infinite;
+}
+
+.leaf-1 {
+    top: 20%;
+    left: 30%;
+    animation-delay: 0.7s;
+}
+
+.tomato-slice {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, #ff4c24 40%, #ff6b3d 100%);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 4s ease-in-out infinite;
+}
+
+.slice-1 {
+    top: 40%;
+    left: 20%;
+    animation-delay: 0.5s;
+}
+
+.slice-2 {
+    bottom: 30%;
+    right: 25%;
+    animation-delay: 1.5s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+/* Stats Container */
+.stats-container {
+    background-color: var(--card-bg);
+    padding: 30px 50px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    z-index: 10;
+    border: 1px solid var(--border-color);
+    margin-top: 20px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+}
+
+.stat-icon {
+    font-size: 32px;
+}
+
+.stat-info h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.stat-info p {
+    font-size: 14px;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 40px;
+    background-color: var(--border-color);
+}
+
+@media (max-width: 900px) {
+    .stats-container {
+        flex-direction: column;
+        border-radius: 30px;
+        padding: 40px;
+        gap: 30px;
+    }
+
+    .stat-divider {
+        width: 80%;
+        height: 1px;
+    }
+
+    .floating-item {
+        width: 80px;
+    }
+}

@@ -1,0 +1,173 @@
+.food-item{
+    width: 100%;
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px var(--shadow-color);
+    transition: 0.3s;
+    animation: fadeIn 1s;
+    background-color: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.food-item:hover{
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 25px var(--shadow-color);
+}
+.food-item-image{
+    width: 100%;
+    aspect-ratio: 1/0.8;
+    object-fit: cover;
+    border-radius: 15px 15px 0px 0px;
+}
+.food-item-info{
+     padding: 20px;
+     display: flex;
+     flex-direction: column;
+     flex-grow: 1;
+}
+.food-item-name-rating{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.name-indicator-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.dietary-indicator{
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid;
+    border-radius: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.dietary-indicator::after{
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+.dietary-indicator.veg{
+    border-color: #008000;
+}
+.dietary-indicator.veg::after{
+    background-color: #008000;
+}
+.dietary-indicator.non-veg{
+    border-color: #964b00;
+}
+.dietary-indicator.non-veg::after{
+    background-color: #964b00;
+}
+.namewe {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.food-item-name-rating img{
+    width: 70px;
+}
+.food-item-desc{
+    color: var(--text-color);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+.food-item-price{
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: 600; 
+    margin: 0;
+}
+.food-item-img-container{
+    position: relative;
+    overflow: hidden;
+    height: fit-content;
+}
+.food-item-image {
+    transition: 0.5s;
+}
+.food-item:hover .food-item-image {
+    transform: scale(1.05);
+}
+.food-item-img-container .add{
+    width: 40px;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+.food-item-img-container .add:hover{
+    transform: scale(1.1);
+}
+.food-item-counter{
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 50px;
+    background-color: var(--card-bg);
+    box-shadow: 0px 2px 10px var(--shadow-color);
+    z-index: 10;
+}
+.counter-btn{
+    width: 32px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.counter-btn:hover{
+    transform: scale(1.1);
+}
+.counter-btn:active{
+    transform: scale(0.9);
+}
+.cart-count{
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-dark);
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Out of Stock Styling */
+.out-of-stock-item {
+    filter: grayscale(1);
+    opacity: 0.8;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.out-of-stock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: 2px;
+    z-index: 5;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.out-of-stock-item .food-item-price {
+    color: #888;
+}

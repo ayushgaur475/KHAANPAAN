@@ -1,0 +1,185 @@
+.place-order {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 80px;
+    margin: 120px auto 60px;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+.place-order-left {
+    flex: 1;
+    max-width: 600px;
+}
+
+.place-order-left .title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+}
+
+.place-order-left input {
+    margin-bottom: 20px;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    outline: none;
+    background-color: var(--card-bg);
+    color: var(--text-dark);
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.place-order-left input:focus {
+    border-color: #ff4c24;
+    box-shadow: 0 0 0 4px rgba(255, 76, 36, 0.1);
+}
+
+.place-order-left .multi-fields {
+    display: flex;
+    gap: 20px;
+}
+
+.place-order-right {
+    flex: 1;
+    max-width: 450px;
+    position: sticky;
+    top: 150px;
+}
+
+.cart-total-container {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 25px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.summary-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+}
+
+.cart-total-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.summary-hr {
+    margin: 25px 0;
+    border: none;
+    height: 1px;
+    background-color: var(--border-color);
+}
+
+.total-row {
+    color: var(--text-dark);
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.payment-btn {
+    width: 100%;
+    padding: 18px;
+    background-color: #ff4c24;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.payment-btn:hover {
+    background-color: #e83a14;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 76, 36, 0.4);
+}
+
+.loyalty-section {
+    margin-bottom: 30px;
+    padding: 25px;
+    background: var(--card-bg);
+    border: 1px solid #ffd54f;
+    border-radius: 15px;
+}
+
+.loyalty-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.loyalty-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #e65100;
+}
+
+.dark-mode .loyalty-header h3 {
+    color: #ffcc80;
+}
+
+.loyalty-content p {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 12px;
+}
+
+.coin-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--hover-bg);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.coin-toggle label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+}
+
+.coins-to-earn {
+    font-size: 13px;
+    color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.discount-row {
+    color: #28a745 !important;
+    font-weight: 600;
+}
+
+@media (max-width: 1000px) {
+    .place-order {
+        flex-direction: column;
+        gap: 50px;
+        margin-top: 100px;
+    }
+    .place-order-left, .place-order-right {
+        max-width: 100%;
+    }
+    .place-order-right {
+        position: static;
+    }
+}
