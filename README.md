@@ -76,7 +76,10 @@ npm run dev
 
 ## 📸 Screenshots
 
-![Project Screenshot](frontend/public/myproject.png)
+<p align="center">
+  <img src="frontend/src/assets/myproject.png" width="90%" />
+</p>
+
 
 ## 🤝 Contributing
 Contributions are welcome! Feel free to open an issue or submit a pull request.
