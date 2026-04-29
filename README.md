@@ -72,7 +72,7 @@ npm run dev
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="frontend/src/assets/myproject.png" width="90%" />
+  <img src="frontend/src/assets/myproject1.mp4" width="90%" />
 </p>
 
 
