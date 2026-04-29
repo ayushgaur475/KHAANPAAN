@@ -75,6 +75,11 @@ npm run dev
   <img src="frontend/src/assets/myproject1.mp4" width="90%" />
 </p>
 
+### 🎬 Project Demo
+<p align="center">
+  <video src="frontend/src/assets/myproject1.mp4" width="90%" controls></video>
+</p>
+
 
 ## 🤝 Contributing
 Contributions are welcome! Feel free to open an issue or submit a pull request.
