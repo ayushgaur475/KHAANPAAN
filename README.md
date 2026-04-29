@@ -78,7 +78,7 @@ npm run dev
 
 | Customer Menu | Admin Dashboard |
 |---|---|
-| ![Menu]("C:\Users\Ayush\Videos\Screen Recordings\Screen Recording 2026-04-30 015147.mp4") | ![Admin](frontend/src/assets/parcel_icon.png) |
+| ![Home]("D:\projects\KHAANPAAN\KHAANPAAN\frontend\src\assets\myproject.png") 
 
 ---
 
