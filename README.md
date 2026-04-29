@@ -76,11 +76,7 @@ npm run dev
 
 ## 📸 Screenshots
 
-| Customer Menu | Admin Dashboard |
-|---|---|
-| ![Home]("D:\projects\KHAANPAAN\KHAANPAAN\frontend\src\assets\myproject.png") 
-
----
+![Project Screenshot](frontend/public/myproject.png)
 
 ## 🤝 Contributing
 Contributions are welcome! Feel free to open an issue or submit a pull request.
