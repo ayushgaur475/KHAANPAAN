@@ -11,11 +11,6 @@ KhaanPaan is a state-of-the-art, full-stack food delivery application designed f
 - **Instant Redemption**: Redeem coins at checkout for direct discounts (1 KP Coin = ₹1).
 - **Gamified Experience**: Visual coin balance with animations in the navbar.
 
-### 🔍 Smart Search Engine
-- **Instant Filtering**: Real-time search across dish names and categories.
-- **Auto-Scroll**: Automatically scrolls to results for a seamless UX.
-- **"No Results" Intelligence**: Polished feedback when no matches are found.
-
 ### 🌓 Advanced UI/UX
 - **Dynamic Themes**: Full support for Dark and Light modes.
 - **Rich Aesthetics**: Glassmorphic components, smooth transitions, and premium typography.
