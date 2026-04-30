@@ -70,9 +70,16 @@
 }
 
 @media (max-width: 750px) {
+    .header {
+        height: 60vw;
+        margin: 20px auto;
+    }
 
     .header-contents {
-        max-width: 65%;
+        max-width: 80%;
+        left: 8vw;
+        bottom: 15%;
+        gap: 3vw;
     }
 
     .header-contents p {
@@ -80,6 +87,7 @@
     }
 
     .header-contents button {
-        padding: 2vw 4vw;
+        padding: 2.5vw 6vw;
+        font-size: 12px;
     }
 }

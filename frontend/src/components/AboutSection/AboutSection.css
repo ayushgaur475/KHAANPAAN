@@ -240,19 +240,40 @@
 }
 
 @media (max-width: 900px) {
-    .stats-container {
-        flex-direction: column;
-        border-radius: 30px;
-        padding: 40px;
+    .about-section {
+        padding: 60px 20px;
         gap: 30px;
     }
 
+    .about-title {
+        font-size: 26px;
+    }
+
+    .about-description {
+        font-size: 18px;
+    }
+
+    .stats-container {
+        flex-direction: column;
+        border-radius: 25px;
+        padding: 30px;
+        gap: 20px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .stat-item {
+        width: 100%;
+        justify-content: center;
+    }
+
     .stat-divider {
-        width: 80%;
+        width: 60%;
         height: 1px;
     }
 
     .floating-item {
-        width: 80px;
+        width: 60px;
+        opacity: 0.3;
     }
 }
