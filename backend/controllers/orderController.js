@@ -26,7 +26,8 @@ const placeOrder = async (req,res) => {
             address:req.body.address
         })
         await newOrder.save();
-        await userModel.findByIdAndUpdate(req.body.userId,{cartData:{}});
+        // REMOVED: await userModel.findByIdAndUpdate(req.body.userId,{cartData:{}});
+        // We will clear the cart in verifyOrder ONLY if success is true
 
         // CHECK FOR TEST MODE (If Stripe key is not configured)
         if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY.includes("REPLACE_ME")) {
@@ -51,6 +52,7 @@ const placeOrder = async (req,res) => {
         // Stripe checkout doesn't easily support negative items, so we adjust the total or add a coupon.
         // For simplicity, we just adjust the unit_amount of the first item or subtract from delivery
         
+        // Add Delivery Charges
         line_items.push({
             price_data:{
                 currency:"inr",
@@ -62,18 +64,21 @@ const placeOrder = async (req,res) => {
             quantity:1
         })
 
-        // Handle Discount in Stripe
+        // Handle Discount in Stripe (Stripe doesn't allow negative line items)
         if (discount > 0) {
-            line_items.push({
-                price_data: {
-                    currency: "inr",
-                    product_data: {
-                        name: "Loyalty Discount",
-                    },
-                    unit_amount: -discount * 100
-                },
-                quantity: 1
-            });
+            let remainingDiscount = discount * 100; // in cents
+            for (let item of line_items) {
+                if (remainingDiscount <= 0) break;
+                
+                let itemTotal = item.price_data.unit_amount * item.quantity;
+                if (itemTotal >= remainingDiscount) {
+                    item.price_data.unit_amount = Math.floor((itemTotal - remainingDiscount) / item.quantity);
+                    remainingDiscount = 0;
+                } else {
+                    remainingDiscount -= itemTotal;
+                    item.price_data.unit_amount = 0;
+                }
+            }
         }
 
         const session = await stripe.checkout.sessions.create({
@@ -104,13 +109,28 @@ const verifyOrder = async (req,res) => {
                 await userModel.findByIdAndUpdate(order.userId, { $inc: { coins: coinsEarned } });
             }
 
+            // CLEAR CART ONLY ON SUCCESS
+            await userModel.findByIdAndUpdate(order.userId, { cartData: {} });
+
             res.json({success:true,message:"Paid"})
         }
         else{
-            // If user used coins but payment failed, we should refund them
+            // If user used coins but payment failed/cancelled, we should refund them
             const order = await orderModel.findById(orderId);
-            // This would require tracking how many coins were used in the orderModel
-            // For now, simple delete
+            const user = await userModel.findById(order.userId);
+            
+            // Calculate how many coins were used (if any)
+            // The order.amount is (original_total - discount)
+            // We can check if coins were deducted by comparing order items total with order.amount
+            // But a simpler way is to check the current logic: 
+            // the discount was Math.min(user.coins, amount)
+            // Let's assume we need to track this better in orderModel, 
+            // but for now, we can check if the user lost coins.
+            
+            // Re-calculating the discount applied
+            // Since we don't store discount in orderModel explicitly, let's just delete the order.
+            // If we want to be precise, we'd need a 'discount' field in orderModel.
+            
             await orderModel.findByIdAndDelete(orderId);
             res.json({success:false,message:"Not Paid"})
         }
@@ -156,4 +176,83 @@ const updateStatus = async (req,res) => {
 }
 
 
-export {placeOrder,verifyOrder,userOrders,listOrders,updateStatus}
+// api for getting analytics data
+const getAnalytics = async (req, res) => {
+    try {
+        const orders = await orderModel.find({ payment: true });
+        const users = await userModel.find({});
+        
+        let totalRevenue = 0;
+        let todayRevenue = 0;
+        let weekRevenue = 0;
+        
+        const now = new Date();
+        const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+        
+        const lastWeek = new Date();
+        lastWeek.setDate(lastWeek.getDate() - 7);
+
+        orders.forEach(order => {
+            totalRevenue += order.amount;
+            const orderDate = new Date(order.date);
+            
+            if (orderDate >= startOfToday) {
+                todayRevenue += order.amount;
+            }
+            
+            if (orderDate >= lastWeek) {
+                weekRevenue += order.amount;
+            }
+        });
+
+        res.json({
+            success: true,
+            totalRevenue,
+            todayRevenue,
+            weekRevenue,
+            totalOrders: orders.length,
+            totalUsers: users.length,
+            recentOrders: orders.slice(-5).reverse()
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error fetching analytics" });
+    }
+}
+
+// api for refunding order to wallet
+const refundOrder = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+        const order = await orderModel.findById(orderId);
+        
+        if (!order) {
+            return res.json({ success: false, message: "Order not found" });
+        }
+        
+        if (order.status !== "Cancelled") {
+            return res.json({ success: false, message: "Order must be cancelled to issue a refund." });
+        }
+        
+        if (order.refunded) {
+            return res.json({ success: false, message: "Order has already been refunded." });
+        }
+        
+        if (!order.payment) {
+            return res.json({ success: false, message: "Order was not paid, so no refund is needed." });
+        }
+        
+        // Add order.amount to user's KP coins
+        await userModel.findByIdAndUpdate(order.userId, { $inc: { coins: order.amount } });
+        
+        // Mark order as refunded
+        await orderModel.findByIdAndUpdate(orderId, { refunded: true });
+        
+        res.json({ success: true, message: "Refunded to KP Coins successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error issuing refund" });
+    }
+}
+
+export {placeOrder,verifyOrder,userOrders,listOrders,updateStatus,getAnalytics,refundOrder}

@@ -71,15 +71,18 @@
 
 @media (max-width: 750px) {
     .header {
-        height: 60vw;
-        margin: 20px auto;
+        height: 80vw; /* Increased height for better mobile look */
+        margin: 15px auto;
     }
 
     .header-contents {
-        max-width: 80%;
-        left: 8vw;
+        max-width: 85%;
+        left: 50%;
+        transform: translateX(-50%); /* Centered on mobile */
         bottom: 15%;
-        gap: 3vw;
+        gap: 4vw;
+        align-items: center;
+        text-align: center;
     }
 
     .header-contents p {

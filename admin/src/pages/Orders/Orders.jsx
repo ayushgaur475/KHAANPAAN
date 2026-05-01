@@ -27,6 +27,20 @@ const Orders = ({ url, token }) => {
     }
   };
 
+  const refundHandler = async (orderId) => {
+    try {
+      const response = await axios.post(url + "/api/order/refund", { orderId }, { headers: { token } });
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await fetchAllOrders();
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Error issuing refund.");
+    }
+  };
+
   useEffect(() => {
     fetchAllOrders();
   }, []);
@@ -86,6 +100,14 @@ const Orders = ({ url, token }) => {
                     <option value="Delivered">Delivered</option>
                     <option value="Cancelled">Cancelled</option>
                   </select>
+                  {order.status === "Cancelled" && order.payment && !order.refunded && (
+                    <button onClick={() => refundHandler(order._id)} className="refund-btn">
+                      Refund to Wallet
+                    </button>
+                  )}
+                  {order.refunded && (
+                    <span className="refunded-badge">Refunded ✓</span>
+                  )}
                 </div>
               </div>
             </div>

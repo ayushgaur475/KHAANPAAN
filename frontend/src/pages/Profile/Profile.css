@@ -1,0 +1,105 @@
+.profile-container {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.profile-form {
+  width: 100%;
+  max-width: 500px;
+  background-color: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-form h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.profile-img-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 3px solid #ff4c24;
+  transition: transform 0.3s;
+}
+
+.preview-img:hover {
+  transform: scale(1.05);
+}
+
+.profile-img-upload p {
+  font-size: 12px;
+  color: #777;
+}
+
+.profile-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.input-group label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+}
+
+.input-group input, .input-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s;
+  font-family: inherit;
+}
+
+.input-group input:focus, .input-group textarea:focus {
+  border-color: #ff4c24;
+}
+
+.save-btn {
+  background-color: #ff4c24;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.save-btn:hover {
+  background-color: #e03e1a;
+}
+
+.save-btn:disabled {
+  background-color: #ffb8a8;
+  cursor: not-allowed;
+}

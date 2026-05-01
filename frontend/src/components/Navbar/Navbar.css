@@ -111,6 +111,7 @@
     cursor: pointer;
     transition: transform 0.3s ease, color 0.3s ease;
     opacity: 0.8;
+    display: block;
 }
 
 .navbar-right .search-icon:hover {
@@ -118,14 +119,17 @@
     opacity: 1;
 }
 
+.navbar-search-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
 .navbar-search-icon img {
     width: 24px;
     cursor: pointer;
     transition: transform 0.2s ease;
-}
-
-.navbar-search-icon {
-    position: relative;
+    display: block;
 }
 
 .navbar-search-icon .dot {
@@ -134,8 +138,8 @@
     min-height: 10px;
     background-color: #ff4c24;
     border-radius: 50%;
-    top: -5px;
-    right: -5px;
+    top: -3px;
+    right: -3px;
     border: 2px solid white;
 }
 
@@ -189,11 +193,19 @@
     cursor: pointer;
 }
 
+.nav-profile-img {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ff4c24;
+}
+
 .nav-profile-dropdown {
     position: absolute;
     display: none;
     right: 0;
-    top: 40px;
+    top: 30px;
     z-index: 10;
     min-width: 150px;
     background-color: var(--card-bg);
@@ -291,40 +303,60 @@
 }
 
 @media (max-width: 750px) {
-    .navbar { padding: 10px 20px; }
+    .navbar { 
+        padding: 10px 12px; /* Less padding to give more room inside */
+    }
     .navbar-menu { display: none; }
-    .navbar-right { gap: 12px; }
-    .navbar .logo { width: 110px; }
+    .navbar-right { 
+        gap: 6px; /* Tighten gaps slightly to fit everything */
+        flex-wrap: nowrap;
+    }
+    .navbar .logo { 
+        width: 85px; /* Shrunk logo for more space */
+    }
     
     .navbar-coins {
-        padding: 4px 10px;
-        gap: 5px;
+        padding: 3px 6px;
+        gap: 3px;
+        min-width: fit-content;
     }
     
     .coin-balance {
-        font-size: 12px;
+        font-size: 10px;
     }
     
     .coin-icon {
-        font-size: 14px;
+        font-size: 11px;
     }
 
     .theme-toggle {
-        width: 34px;
-        height: 34px;
-        font-size: 16px;
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .navbar-right .search-icon {
+        width: 16px;
+    }
+
+    .navbar-profile img {
+        width: 20px;
+    }
+
+    .navbar-search-icon img {
+        width: 20px;
     }
 }
 
 @media (max-width: 480px) {
-    .navbar { padding: 10px 15px; }
-    .navbar-right { gap: 8px; }
+    .navbar { padding: 10px 8px; }
+    .navbar-right { gap: 5px; }
     
     .navbar-profile-container {
-        gap: 10px;
+        gap: 6px;
     }
 
     .navbar-search-container.active .navbar-search-input {
-        width: 120px;
+        width: 90px; /* Even smaller search on tiny phones */
     }
 }

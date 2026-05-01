@@ -84,6 +84,13 @@ hr {
   min-height: calc(100vh - 70px); /* Adjust based on navbar height */
 }
 
+@media (max-width: 768px) {
+  .app-content {
+    flex-direction: column;
+    padding-bottom: 70px; /* Space for bottom sidebar */
+  }
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;

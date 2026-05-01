@@ -7,7 +7,7 @@ import { StoreContext } from "../../context/StoreContext";
 function Navbar({setShowLogin, theme, toggleTheme}) {
     const [menu, setMenu] = useState("home");
 
-    const {getTotalCartAmount, token, setToken, search, setSearch, showSearch, setShowSearch, userData} = useContext(StoreContext);
+    const {getTotalCartAmount, token, setToken, search, setSearch, showSearch, setShowSearch, userData, url} = useContext(StoreContext);
     const navigate = useNavigate();
     const logout = () => {
        localStorage.removeItem("token");
@@ -52,8 +52,10 @@ function Navbar({setShowLogin, theme, toggleTheme}) {
             <span className="coin-balance">{userData.coins} KP</span>
           </div>
           <div className='navbar-profile'>
-            <img src={assets.profile_icon} alt=""></img>
+            <img src={userData.photo ? `${url}/images/${userData.photo}` : assets.profile_icon} alt="Profile" className="nav-profile-img"></img>
             <ul className='nav-profile-dropdown'>
+              <li onClick={() => navigate('/profile')}><img src={assets.profile_icon}></img><p>Profile</p></li>
+              <hr></hr>
               <li onClick={() => navigate('/myorders')}><img src={assets.bag_icon}></img><p>Orders</p></li>
               <hr></hr>
               <li onClick={logout}><img src={assets.logout_icon}></img><p>Logout</p></li>

@@ -6,6 +6,10 @@ function Sidebar() {
   return (
     <div className='sidebar'>
       <div className='sidebar-options'>
+        <NavLink to='/' className='sidebar-option'>
+          <img src={assets.order_icon}></img>
+          <p>Dashboard</p>
+        </NavLink>
         <NavLink to='/add'className='sidebar-option'>
           <img src={assets.add_icon}></img>
           <p>Add Items</p>

@@ -5,14 +5,14 @@ import AboutSection from '../../components/AboutSection/AboutSection'
 import ExploreMenu from '../../components/ExploreMenu/ExploreMenu'
 import FoodDisplay from '../../components/FoodDisplay/FoodDisplay'
 
-function Home() {
+function Home({ setShowLogin }) {
   const [category, setCategory] = useState("All")
   return (
     <div>
       <Header></Header>
       <AboutSection></AboutSection>
       <ExploreMenu category={category} setCategory={setCategory}></ExploreMenu>
-      <FoodDisplay category={category}></FoodDisplay>
+      <FoodDisplay category={category} setShowLogin={setShowLogin}></FoodDisplay>
     </div>
   )
 }

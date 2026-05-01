@@ -10,12 +10,19 @@ const StoreContextProvider = (props) => {
   const [food_list, setFoodList] = useState(local_food_list);
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [userData, setUserData] = useState({ name: "", coins: 0 });
+  const [userData, setUserData] = useState({ name: "", coins: 0, email: "", phone: "", photo: "", bio: "" });
 
   const fetchUserData = async (token) => {
     const response = await axios.post(url + "/api/user/info", {}, { headers: { token } });
     if (response.data.success) {
-      setUserData({ name: response.data.name, coins: response.data.coins });
+      setUserData({ 
+        name: response.data.name, 
+        coins: response.data.coins,
+        email: response.data.email || "",
+        phone: response.data.phone || "",
+        photo: response.data.photo || "",
+        bio: response.data.bio || ""
+      });
     }
   }
 

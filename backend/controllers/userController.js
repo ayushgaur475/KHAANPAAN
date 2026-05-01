@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import validator from "validator";
+import nodemailer from "nodemailer";
 
 // login user
 const loginUser = async (req, res) => {
@@ -78,11 +79,124 @@ const registerUser = async (req, res) => {
 const getUserInfo = async (req, res) => {
     try {
         const user = await userModel.findById(req.body.userId);
-        res.json({ success: true, name: user.name, coins: user.coins });
+        res.json({ success: true, name: user.name, coins: user.coins, email: user.email, phone: user.phone, photo: user.photo, bio: user.bio });
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: "Error" });
     }
 }
 
-export { loginUser, registerUser, getUserInfo };
+const phoneLogin = async (req, res) => {
+  const { phone, name } = req.body;
+  try {
+    let user = await userModel.findOne({ phone });
+
+    if (!user) {
+      // Create new user if doesn't exist
+      user = new userModel({
+        name: name || "User",
+        phone: phone,
+        email: phone + "@khaanpaan.com", // Dummy email to satisfy any existing logic that expects email
+      });
+      await user.save();
+    }
+
+    const token = createToken(user._id);
+    res.json({ success: true, token });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error" });
+  }
+};
+
+const sendOtp = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpire = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+    let user = await userModel.findOne({ email });
+    if (!user) {
+      user = new userModel({ name: "User", email });
+    }
+    user.otp = otp;
+    user.otpExpire = otpExpire;
+    await user.save();
+
+    // Nodemailer configuration
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "KHAANPAAN Login OTP",
+      text: `Your OTP for login is: ${otp}. It will expire in 5 minutes.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.json({ success: true, message: "OTP sent to your email." });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error sending OTP." });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    const user = await userModel.findOne({ email, otp });
+
+    if (!user || user.otpExpire < new Date()) {
+      return res.json({ success: false, message: "Invalid or expired OTP." });
+    }
+
+    // Clear OTP after successful verification
+    user.otp = undefined;
+    user.otpExpire = undefined;
+    await user.save();
+
+    const token = createToken(user._id);
+    res.json({ success: true, token });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error verifying OTP." });
+  }
+};
+
+const updateUserInfo = async (req, res) => {
+  try {
+    const { name, email, phone, bio } = req.body;
+    const userId = req.userId || req.body.userId;
+    let updateData = { name, email, phone, bio };
+
+    if (req.file) {
+      updateData.photo = req.file.filename;
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(userId, updateData, { new: true });
+    
+    res.json({ 
+      success: true, 
+      message: "Profile updated successfully", 
+      data: {
+        name: updatedUser.name,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        photo: updatedUser.photo,
+        bio: updatedUser.bio,
+        coins: updatedUser.coins
+      } 
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error updating profile" });
+  }
+};
+
+export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo };

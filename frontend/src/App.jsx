@@ -10,6 +10,7 @@ import Verify from './pages/Verify/Verify'
 import MyOrders from './pages/MyOrders/MyOrders'
 import CartBar from './components/CartBar/CartBar'
 import TrackOrder from './pages/TrackOrder/TrackOrder'
+import Profile from './pages/Profile/Profile'
 import { useEffect } from 'react'
 
 function App() {
@@ -39,12 +40,13 @@ function App() {
     <div className='app'>
       <Navbar setShowLogin={setShowLogin} theme={theme} toggleTheme={toggleTheme}/>
       <Routes>
-        <Route path = '/' element={<Home/>}></Route>
+        <Route path = '/' element={<Home setShowLogin={setShowLogin}/>}></Route>
         <Route path = '/Cart' element={<Cart/>}></Route>
         <Route path = '/order' element={<PlaceOrder/>}></Route>
         <Route path = '/verify' element={<Verify/>}/>
         <Route path = '/myorders' element={<MyOrders/>}/>
         <Route path = '/track/:orderId' element={<TrackOrder/>}/>
+        <Route path = '/profile' element={<Profile/>}/>
       </Routes>
     </div>
     <Footer></Footer>

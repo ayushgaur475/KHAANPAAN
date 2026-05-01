@@ -5,7 +5,7 @@ import FoodItem from "../FoodItem/FoodItem";
 
 import { menu_list, assets } from "../../assets/assets";
 
-function FoodDisplay({ category }) {
+function FoodDisplay({ category, setShowLogin }) {
   const { food_list, search } = useContext(StoreContext);
   const [dietary, setDietary] = useState("All"); // All, Veg, Non-Veg
   const displayRef = useRef(null);
@@ -96,6 +96,7 @@ function FoodDisplay({ category }) {
                               image={item.image}
                               veg={item.veg}
                               inStock={item.inStock}
+                              setShowLogin={setShowLogin}
                             />
                           ))}
                         </div>
@@ -116,6 +117,7 @@ function FoodDisplay({ category }) {
                               image={item.image}
                               veg={item.veg}
                               inStock={item.inStock}
+                              setShowLogin={setShowLogin}
                             />
                           ))}
                         </div>

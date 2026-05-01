@@ -66,10 +66,16 @@
 
 @media (max-width: 600px) {
     .cart-bar {
-        width: 95%;
-        padding: 12px 15px;
+        width: 90%;
+        bottom: 15px;
+        padding: 10px 20px;
     }
     .cart-bar-info {
         font-size: 14px;
+        gap: 8px;
+    }
+    .cart-bar-btn {
+        padding: 6px 14px;
+        font-size: 12px;
     }
 }

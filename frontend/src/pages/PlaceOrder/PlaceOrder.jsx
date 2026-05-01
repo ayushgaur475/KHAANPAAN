@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function PlaceOrder() {
-  const { getTotalCartAmount, token, food_list, cartItems, url, userData } =
+  const { getTotalCartAmount, token, food_list, cartItems, url, userData, addToCart, removeFromCart } =
     useContext(StoreContext);
   const [useCoins, setUseCoins] = useState(false);
   const [data, setData] = useState({

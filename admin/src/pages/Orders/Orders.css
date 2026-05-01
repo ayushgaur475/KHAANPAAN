@@ -128,6 +128,36 @@
     cursor: pointer;
 }
 
+.refund-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #ff4c24;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.refund-btn:hover {
+    background-color: #e03e1a;
+}
+
+.refunded-badge {
+    display: inline-block;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: #dcfce7;
+    color: #166534;
+    border-radius: 6px;
+    font-weight: 700;
+    border: 1px solid #166534;
+}
+
 @media (max-width: 768px) {
     .order-card-header {
         grid-template-columns: 50px 1fr;

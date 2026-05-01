@@ -3,8 +3,16 @@ import './FoodItem.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext';
 
-function FoodItem({id, name, price, description, image, veg, inStock = true}) {
-  const {cartItems, addToCart, removeFromCart, url} = useContext(StoreContext);
+function FoodItem({id, name, price, description, image, veg, inStock = true, setShowLogin}) {
+  const {cartItems, addToCart, removeFromCart, url, token} = useContext(StoreContext);
+
+  const handleAddToCart = () => {
+    if (!token) {
+      setShowLogin(true);
+      return;
+    }
+    addToCart(id);
+  };
 
   // Smart check: If name contains "Chicken", it's Non-Veg regardless of database value
   const isActuallyVeg = name.toLowerCase().includes("chicken") ? false : veg;
@@ -16,7 +24,7 @@ function FoodItem({id, name, price, description, image, veg, inStock = true}) {
       {!inStock && <div className="out-of-stock-overlay">SOLD OUT</div>}
       {inStock && (
         !cartItems || !cartItems[id]
-          ? <img className='add' onClick={() => addToCart(id)} src={assets.add_icon_white} alt="Add to cart" />
+          ? <img className='add' onClick={handleAddToCart} src={assets.add_icon_white} alt="Add to cart" />
           : <div className='food-item-counter'>
               <img className='counter-btn' onClick={() => removeFromCart(id)} src={assets.remove_icon_red} alt="Remove" />
               <p className='cart-count'>{cartItems[id]}</p>

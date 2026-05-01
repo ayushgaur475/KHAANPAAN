@@ -60,7 +60,9 @@ const MyOrders = () => {
                             </p>
                             <p className="update-time">Updated: {new Date(order.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                         </div>
-                        <button className="track-btn" onClick={() => navigate(`/track/${order._id}`)}>Track Order</button>
+                        {order.status !== "Delivered" && order.status !== "Cancelled" && (
+                            <button className="track-btn" onClick={() => navigate(`/track/${order._id}`)}>Track Order</button>
+                        )}
                     </div>
                 )
             })}

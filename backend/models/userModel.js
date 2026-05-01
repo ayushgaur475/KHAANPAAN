@@ -13,7 +13,26 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: false,
+    },
+    phone: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    otp: {
+      type: String,
+    },
+    otpExpire: {
+      type: Date,
+    },
+    photo: {
+      type: String,
+      default: "",
+    },
+    bio: {
+      type: String,
+      default: "",
     },
     cartData: {
       type: Object,

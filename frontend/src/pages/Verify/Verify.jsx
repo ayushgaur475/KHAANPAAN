@@ -19,7 +19,8 @@ function Verify() {
                 navigate(`/track/${orderId}`);
             }
             else{
-                navigate("/")
+                // If payment cancelled, go back to checkout page
+                navigate("/order")
             }
         } catch (error) {
             console.error("Verification error:", error);
