@@ -2,12 +2,24 @@ import express from 'express'
 import { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo } from '../controllers/userController.js'
 import authMiddleware from '../middleware/auth.js';
 import multer from 'multer';
+import { GridFsStorage } from 'multer-gridfs-storage';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const userRouter = express.Router();
 
-import { storage } from "../config/cloudinary.js";
+// GridFS Storage Engine
+const storage = new GridFsStorage({
+    url: process.env.MONGO_URI,
+    file: (req, file) => {
+        return {
+            filename: `${Date.now()}_${file.originalname}`,
+            bucketName: 'uploads'
+        };
+    }
+});
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 userRouter.post("/register", registerUser)
 userRouter.post("/login", loginUser)
@@ -16,4 +28,5 @@ userRouter.post("/send-otp", sendOtp)
 userRouter.post("/verify-otp", verifyOtp)
 userRouter.post("/info", authMiddleware, getUserInfo)
 userRouter.post("/update", authMiddleware, upload.single("image"), updateUserInfo)
+
 export default userRouter

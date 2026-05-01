@@ -29,7 +29,20 @@ connectDB();
 
 // api endpoints
 app.use("/api/food", foodRouter);
-app.use("/images", express.static('uploads'));
+import { gridfsBucket } from './config/db.js';
+
+app.get("/images/:filename", async (req, res) => {
+    try {
+        const file = await gridfsBucket.find({ filename: req.params.filename }).toArray();
+        if (!file || file.length === 0) {
+            return res.status(404).json({ err: 'No file exists' });
+        }
+        const readStream = gridfsBucket.openDownloadStreamByName(req.params.filename);
+        readStream.pipe(res);
+    } catch (err) {
+        res.status(500).json({ err: 'Error streaming file' });
+    }
+});
 app.use("/api/user/", userRouter);
 app.use("/api/cart",cartRouter);
 app.use("/api/order", orderRouter)

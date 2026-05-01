@@ -176,7 +176,7 @@ const updateUserInfo = async (req, res) => {
     let updateData = { name, email, phone, bio };
 
     if (req.file) {
-      updateData.photo = req.file.path;
+      updateData.photo = req.file.filename;
     }
 
     const updatedUser = await userModel.findByIdAndUpdate(userId, updateData, { new: true });
