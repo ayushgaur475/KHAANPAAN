@@ -33,7 +33,7 @@ function Navbar({ url, token, setToken, adminPhoto }) {
     setTheme(prev => prev === "light" ? "dark" : "light");
   }
 
-  const profileSrc = displayPhoto ? `${url}/images/${displayPhoto}` : assets.profile_image;
+  const profileSrc = displayPhoto ? (displayPhoto.startsWith('http') ? displayPhoto : `${url}/images/${displayPhoto}`) : assets.profile_image;
 
   return (
     <div className='navbar glass-card'>

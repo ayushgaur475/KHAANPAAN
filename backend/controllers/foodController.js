@@ -5,7 +5,7 @@ import fs from 'fs'
 
 const addFood = async(req, res) => {
     
-    let image_filename = `${req.file.filename}`;
+    let image_filename = `${req.file.path}`;
     const food = new foodModel({
         name: req.body.name,
         description: req.body.description,
@@ -53,7 +53,6 @@ const listFood = async(req, res) => {
 const removeFood = async (req, res) => {
     try{
         const food = await foodModel.findById(req.body.id);
-        fs.unlink(`uploads/${food.image}`, () => {})
         await foodModel.findByIdAndDelete(req.body.id); // to delete from database
         res.json({
             success: true,

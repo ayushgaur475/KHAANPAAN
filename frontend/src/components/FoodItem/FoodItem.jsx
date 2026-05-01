@@ -20,7 +20,7 @@ function FoodItem({id, name, price, description, image, veg, inStock = true, set
   return (
     <div className={`food-item ${!inStock ? 'out-of-stock-item' : ''}`}>
       <div className='food-item-img-container'>
-      <img className='food-item-image' src={typeof image === 'string' ? url+"/images/"+image : image} alt = ""></img>
+      <img className='food-item-image' src={typeof image === 'string' && image.startsWith('http') ? image : typeof image === 'string' ? url+"/images/"+image : image} alt = ""></img>
       {!inStock && <div className="out-of-stock-overlay">SOLD OUT</div>}
       {inStock && (
         !cartItems || !cartItems[id]

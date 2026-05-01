@@ -25,7 +25,7 @@ function Cart() {
               return (
                 <div key={item._id} className="cart-item-row">
                   <div className="cart-item-img">
-                    <img src={url + "/images/"+ item.image} alt={item.name}></img>
+                    <img src={typeof item.image === 'string' && item.image.startsWith('http') ? item.image : url + "/images/"+ item.image} alt={item.name}></img>
                   </div>
                   <p className="cart-item-name">{item.name}</p>
                   <p className="cart-item-price">₹{item.price}</p>

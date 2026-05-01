@@ -95,7 +95,7 @@ const Profile = () => {
         <div className="profile-img-upload">
           <label htmlFor="image">
             <img 
-              src={image ? URL.createObjectURL(image) : (userData.photo ? `${url}/images/${userData.photo}` : assets.profile_icon)} 
+              src={image ? URL.createObjectURL(image) : (userData.photo ? (userData.photo.startsWith('http') ? userData.photo : `${url}/images/${userData.photo}`) : assets.profile_icon)} 
               alt="Profile" 
               className="preview-img" 
             />

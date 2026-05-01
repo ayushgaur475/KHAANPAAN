@@ -62,7 +62,7 @@ function List({url, token}) {
               return (
                 <div key={index} className='list-table-row'>
                   <div className="item-img-container">
-                    <img src={`${url}/images/`+item.image} alt={item.name}></img>
+                    <img src={typeof item.image === 'string' && item.image.startsWith('http') ? item.image : `${url}/images/`+item.image} alt={item.name}></img>
                   </div>
                   <p className="item-name">{item.name}</p>
                   <p className="item-category-badge">{item.category}</p>

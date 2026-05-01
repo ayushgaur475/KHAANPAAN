@@ -5,15 +5,9 @@ import multer from 'multer';
 
 const userRouter = express.Router();
 
-// Image storage engine
-const storage = multer.diskStorage({
-    destination: "uploads",
-    filename: (req, file, cb) => {
-        return cb(null, `${Date.now()}_${file.originalname}`)
-    }
-});
+import { storage } from "../config/cloudinary.js";
 
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 userRouter.post("/register", registerUser)
 userRouter.post("/login", loginUser)
