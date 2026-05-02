@@ -13,7 +13,9 @@ import Profile from './pages/Profile/Profile'
 import { useState, useEffect } from 'react'
 
 function App() {
-  const url = "https://khaanpaan-backend.onrender.com";
+  const url = window.location.hostname === "localhost" 
+    ? "http://localhost:5001" 
+    : "https://khaanpaan-backend.onrender.com";
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [adminPhoto, setAdminPhoto] = useState('');
 
