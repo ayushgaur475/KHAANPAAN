@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import Grid from "gridfs-stream";
 
-let gfs, gridfsBucket;
+let gridfsBucket;
 
 export const connectDB = async () => {
     try {
@@ -13,13 +12,12 @@ export const connectDB = async () => {
             bucketName: 'uploads'
         });
 
-        gfs = Grid(db, mongoose.mongo);
-        gfs.collection('uploads');
-        
         console.log("GridFS initialized");
+        return { gridfsBucket };
     } catch (error) {
         console.error("DB Connection Error:", error);
+        process.exit(1); // Exit if DB connection fails
     }
 }
 
-export { gfs, gridfsBucket };
+export const getGridFSBucket = () => gridfsBucket;

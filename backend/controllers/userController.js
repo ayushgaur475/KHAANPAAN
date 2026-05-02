@@ -123,9 +123,11 @@ const sendOtp = async (req, res) => {
     user.otpExpire = otpExpire;
     await user.save();
 
-    // Nodemailer configuration
+    // Nodemailer configuration (Upgraded for stability)
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // Use SSL
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -133,16 +135,25 @@ const sendOtp = async (req, res) => {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"KHAANPAAN" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "KHAANPAAN Login OTP",
       text: `Your OTP for login is: ${otp}. It will expire in 5 minutes.`,
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
+          <h2 style="color: #ff4c24;">KHAANPAAN OTP</h2>
+          <p>Your OTP for login is: <b style="font-size: 24px; color: #ff4c24;">${otp}</b></p>
+          <p>This OTP will expire in 5 minutes.</p>
+        </div>
+      `
     };
 
+    console.log(`DEBUG: Attempting to send OTP to ${email}...`);
     await transporter.sendMail(mailOptions);
+    console.log(`✅ DEBUG: OTP sent successfully to ${email}`);
     res.json({ success: true, message: "OTP sent to your email." });
   } catch (error) {
-    console.log(error);
+    console.error("❌ DEBUG ERROR: OTP Sending Failed:", error.message);
     res.json({ success: false, message: "Error sending OTP." });
   }
 };
