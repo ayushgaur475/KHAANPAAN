@@ -127,9 +127,11 @@ const sendOtp = async (req, res) => {
     user.otpExpire = otpExpire;
     await user.save();
 
-    // LIVE MODE: Using Gmail SMTP (Reliable for Vercel/Render on Port 587)
+    // LIVE MODE: Using Gmail SMTP (Reliable for Vercel/Render on Port 465)
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // Use SSL/TLS
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
