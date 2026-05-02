@@ -217,6 +217,31 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
+const phoneLogin = async (req, res) => {
+  const { phone, uid } = req.body;
+  try {
+    // Try to find user by phone first
+    let user = await userModel.findOne({ phone });
+
+    if (!user) {
+      // Create new user if they don't exist
+      user = new userModel({
+        name: "User",
+        email: `${phone.replace("+", "")}@phone.com`, // Dummy unique email for phone users
+        phone,
+        password: "" // No password for Phone users
+      });
+      await user.save();
+    }
+
+    const token = createToken(user._id);
+    res.json({ success: true, token });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error during Phone Login" });
+  }
+};
+
 const googleLogin = async (req, res) => {
   const { email, name, photo } = req.body;
   try {

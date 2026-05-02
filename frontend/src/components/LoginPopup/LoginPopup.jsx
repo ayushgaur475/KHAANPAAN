@@ -13,15 +13,29 @@ const LoginPopup = ({ setShowLogin }) => {
         name: "",
         email: "",
         password: "",
+        phone: "", // Added phone
         otp: ""
     })
 
     const [otpSent, setOtpSent] = useState(false);
+    const [confirmationResult, setConfirmationResult] = useState(null); // Firebase confirmation object
 
     const onChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setData(data => ({ ...data, [name]: value }))
+    }
+
+    const onCaptchaVerify = () => {
+        if (!window.recaptchaVerifier) {
+            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                'size': 'invisible',
+                'callback': (response) => {
+                    // reCAPTCHA solved, allow signInWithPhoneNumber.
+                    onSendOtp();
+                }
+            });
+        }
     }
 
     const handleGoogleSignIn = async () => {
@@ -50,29 +64,49 @@ const LoginPopup = ({ setShowLogin }) => {
 
     const onSendOtp = async (e) => {
         if (e) e.preventDefault();
-        if (!data.email) {
-            alert("Please enter your email first.");
+        if (!data.phone) {
+            alert("Please enter your phone number first.");
             return;
         }
+
+        // Ensure number has country code (Default to +91 for India if not present)
+        let formattedPhone = data.phone;
+        if (!formattedPhone.startsWith("+")) {
+            formattedPhone = "+91" + formattedPhone;
+        }
+
         try {
-            const response = await axios.post(url + "/api/user/send-otp", { email: data.email });
-            if (response.data.success) {
-                setOtpSent(true);
-            } else {
-                alert(response.data.message);
-            }
+            onCaptchaVerify();
+            const appVerifier = window.recaptchaVerifier;
+            const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
+            setConfirmationResult(confirmation);
+            setOtpSent(true);
+            alert("OTP sent successfully!");
         } catch (error) {
-            console.log(error);
-            alert("Error sending OTP.");
+            console.error("Phone OTP Error:", error);
+            alert("Failed to send OTP. " + error.message);
+            if (window.recaptchaVerifier) {
+                window.recaptchaVerifier.clear();
+                window.recaptchaVerifier = null;
+            }
         }
     }
 
     const onVerifyOtp = async (e) => {
         e.preventDefault();
+        if (!data.otp || !confirmationResult) {
+            alert("Please enter the OTP.");
+            return;
+        }
+
         try {
-            const response = await axios.post(url + "/api/user/verify-otp", {
-                email: data.email,
-                otp: data.otp
+            const result = await confirmationResult.confirm(data.otp);
+            const user = result.user;
+
+            // Send phone info to backend to get JWT token
+            const response = await axios.post(url + "/api/user/phone-login", {
+                phone: user.phoneNumber,
+                uid: user.uid
             });
 
             if (response.data.success) {
@@ -83,7 +117,7 @@ const LoginPopup = ({ setShowLogin }) => {
                 alert(response.data.message);
             }
         } catch (error) {
-            console.log(error);
+            console.error("Verification Error:", error);
             alert("Invalid OTP. Please try again.");
         }
     }
@@ -112,7 +146,7 @@ const LoginPopup = ({ setShowLogin }) => {
 
     return (
         <div className='login-popup'>
-            <form onSubmit={currState === "Email OTP" ? (otpSent ? onVerifyOtp : onSendOtp) : onLogin} className="login-popup-container">
+            <form onSubmit={currState === "Phone OTP" ? (otpSent ? onVerifyOtp : onSendOtp) : onLogin} className="login-popup-container">
                 <div className="login-popup-title">
                     <img className="close-icon" onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="" />
                     <img className="main-logo" src={assets.logo} alt="KHAANPAAN" />
@@ -125,22 +159,27 @@ const LoginPopup = ({ setShowLogin }) => {
                         <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Name' required />
                     )}
 
-                    <input name='email' onChange={onChangeHandler} value={data.email} type="email" placeholder='Email' required disabled={otpSent} />
-
-                    {currState === "Email OTP" ? (
-                        otpSent && (
-                            <input name='otp' onChange={onChangeHandler} value={data.otp} type="text" placeholder='6-digit OTP' required />
-                        )
+                    {currState === "Phone OTP" ? (
+                        <>
+                            <input name='phone' onChange={onChangeHandler} value={data.phone} type="text" placeholder='Phone Number (e.g. 9876543210)' required disabled={otpSent} />
+                            {otpSent && (
+                                <input name='otp' onChange={onChangeHandler} value={data.otp} type="text" placeholder='6-digit OTP' required />
+                            )}
+                            <div id="recaptcha-container"></div>
+                        </>
                     ) : (
-                        <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required />
+                        <>
+                            <input name='email' onChange={onChangeHandler} value={data.email} type="email" placeholder='Email' required />
+                            <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required />
+                        </>
                     )}
                 </div>
 
                 <button type='submit' className="main-btn">
-                    {currState === "Email OTP" ? (otpSent ? "Verify OTP" : "Send OTP") : (currState === "Sign Up" ? "Create account" : "Login")}
+                    {currState === "Phone OTP" ? (otpSent ? "Verify OTP" : "Send OTP") : (currState === "Sign Up" ? "Create account" : "Login")}
                 </button>
 
-                {currState !== "Email OTP" && (
+                {currState !== "Phone OTP" && (
                     <>
                         <div className="separator">OR</div>
                         <button type="button" className="google-btn" onClick={handleGoogleSignIn}>
@@ -156,12 +195,12 @@ const LoginPopup = ({ setShowLogin }) => {
                 </div>
 
                 <div className="login-popup-footer">
-                    {currState === "Email OTP" ? (
+                    {currState === "Phone OTP" ? (
                         <p><span onClick={() => { setCurrState("Login"); setOtpSent(false); }}>Use Password?</span></p>
                     ) : (
                         <div className="footer-links">
                             <span onClick={() => alert("Password reset link sent (Demo)")}>Forgot Password?</span>
-                            <span onClick={() => setCurrState("Email OTP")}>Login with OTP</span>
+                            <span onClick={() => setCurrState("Phone OTP")}>Login with OTP</span>
                             {currState === "Login"
                                 ? <span onClick={() => setCurrState("Sign Up")}>Create account</span>
                                 : <span onClick={() => setCurrState("Login")}>Login here</span>
