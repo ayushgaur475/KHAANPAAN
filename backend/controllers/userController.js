@@ -123,7 +123,7 @@ const sendOtp = async (req, res) => {
     user.otpExpire = otpExpire;
     await user.save();
 
-    // Nodemailer configuration (Adjusted for Render firewall)
+    // Nodemailer configuration (Forced IPv4 for Render)
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -132,6 +132,12 @@ const sendOtp = async (req, res) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      connectionTimeout: 10000, // 10 seconds
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
+      tls: {
+        rejectUnauthorized: false // Helps with some cloud firewalls
+      }
     });
 
     const mailOptions = {
