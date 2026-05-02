@@ -13,7 +13,7 @@ import Profile from './pages/Profile/Profile'
 import { useState, useEffect } from 'react'
 
 function App() {
-  const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000"
+  const url = (import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "") : "http://localhost:4000");
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [adminPhoto, setAdminPhoto] = useState('');
 
