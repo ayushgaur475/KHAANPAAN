@@ -3,7 +3,7 @@ import './LoginPopup.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import axios from "axios"
-import { auth, googleProvider, signInWithPopup } from '../../config/firebase'
+import { auth, googleProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from '../../config/firebase'
 
 const LoginPopup = ({ setShowLogin }) => {
 
