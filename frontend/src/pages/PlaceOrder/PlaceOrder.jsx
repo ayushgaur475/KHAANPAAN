@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function PlaceOrder() {
-  const { getTotalCartAmount, token, food_list, cartItems, url, userData, addToCart, removeFromCart } =
+  const { getTotalCartAmount, token, food_list, cartItems, url, userData, addToCart, removeFromCart, appliedPromo } =
     useContext(StoreContext);
   const [useCoins, setUseCoins] = useState(false);
   const [data, setData] = useState({
@@ -40,7 +40,8 @@ function PlaceOrder() {
       address: data,
       items: orderItems,
       amount: getTotalCartAmount() + 2,
-      useCoins: useCoins
+      useCoins: useCoins,
+      promoCode: appliedPromo
     };
     let response = await axios.post(url +"/api/order/place", orderData, {
       headers: { token },
@@ -182,16 +183,28 @@ function PlaceOrder() {
             <p>Delivery Fee</p>
             <p>₹{getTotalCartAmount() === 0 ? 0 : 2}</p>
           </div>
+          {appliedPromo === "FOOD30" && (userData.isFirstOrder !== false) && getTotalCartAmount() >= 100 && (
+            <div className="cart-total-details discount-row">
+              <p>Promo Discount (FOOD30)</p>
+              <p>-₹{Math.floor(getTotalCartAmount() * 0.3)}</p>
+            </div>
+          )}
           {useCoins && userData.coins > 0 && (
             <div className="cart-total-details discount-row">
               <p>Coin Discount</p>
-              <p>- ₹{Math.min(userData.coins, getTotalCartAmount() + 2)}</p>
+              <p>- ₹{Math.min(userData.coins, getTotalCartAmount() + 2 - (appliedPromo === "FOOD30" && (userData.isFirstOrder !== false) && getTotalCartAmount() >= 100 ? Math.floor(getTotalCartAmount() * 0.3) : 0))}</p>
             </div>
           )}
           <hr className="summary-hr" />
           <div className="cart-total-details total-row">
             <b>Total</b>
-            <b>₹{Math.max(0, (getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2) - (useCoins ? userData.coins : 0))}</b>
+            <b>
+              ₹{Math.max(0, 
+                (getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2) 
+                - (appliedPromo === "FOOD30" && (userData.isFirstOrder !== false) && getTotalCartAmount() >= 100 ? Math.floor(getTotalCartAmount() * 0.3) : 0)
+                - (useCoins ? Math.min(userData.coins, getTotalCartAmount() + 2 - (appliedPromo === "FOOD30" && (userData.isFirstOrder !== false) && getTotalCartAmount() >= 100 ? Math.floor(getTotalCartAmount() * 0.3) : 0)) : 0)
+              )}
+            </b>
           </div>
           <button type="submit" className="payment-btn">PROCEED TO PAYMENT</button>
         </div>

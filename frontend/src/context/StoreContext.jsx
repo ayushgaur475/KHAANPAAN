@@ -11,7 +11,8 @@ const StoreContextProvider = (props) => {
   const [food_list, setFoodList] = useState(local_food_list);
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [userData, setUserData] = useState({ name: "", coins: 0, email: "", phone: "", photo: "", bio: "" });
+  const [userData, setUserData] = useState({ name: "", coins: 0, email: "", phone: "", photo: "", bio: "", isFirstOrder: true });
+  const [appliedPromo, setAppliedPromo] = useState(null);
 
   const fetchUserData = async (token) => {
     const response = await axios.post(url + "/api/user/info", {}, { headers: { token } });
@@ -22,7 +23,8 @@ const StoreContextProvider = (props) => {
         email: response.data.email || "",
         phone: response.data.phone || "",
         photo: response.data.photo || "",
-        bio: response.data.bio || ""
+        bio: response.data.bio || "",
+        isFirstOrder: response.data.isFirstOrder
       });
     }
   }
@@ -98,7 +100,9 @@ const StoreContextProvider = (props) => {
     setShowSearch,
     userData,
     setUserData,
-    fetchUserData
+    fetchUserData,
+    appliedPromo,
+    setAppliedPromo
   };
 
   return (

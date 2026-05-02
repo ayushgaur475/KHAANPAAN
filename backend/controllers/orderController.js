@@ -22,9 +22,21 @@ const placeOrder = async (req,res) => {
         const newOrder = new orderModel({
             userId:req.body.userId,
             items:req.body.items,
-            amount:req.body.amount - discount,
+            amount:req.body.amount,
             address:req.body.address
         })
+
+        // PROMO CODE DISCOUNT: 30% off on first order with FOOD30
+        let promoDiscount = 0;
+        if (req.body.promoCode === "FOOD30" && user.isFirstOrder && req.body.amount >= 100) {
+            promoDiscount = Math.floor(req.body.amount * 0.3);
+            newOrder.amount -= promoDiscount;
+            
+            // LOCK IMMEDIATELY: Mark first order as used so they can't double-dip
+            await userModel.findByIdAndUpdate(req.body.userId, { isFirstOrder: false });
+        }
+
+        newOrder.amount -= discount; // Still apply coins discount if any
         await newOrder.save();
         // REMOVED: await userModel.findByIdAndUpdate(req.body.userId,{cartData:{}});
         // We will clear the cart in verifyOrder ONLY if success is true
@@ -64,9 +76,10 @@ const placeOrder = async (req,res) => {
             quantity:1
         })
 
-        // Handle Discount in Stripe (Stripe doesn't allow negative line items)
-        if (discount > 0) {
-            let remainingDiscount = discount * 100; // in cents
+        // Handle Total Discount in Stripe (Stripe doesn't allow negative line items)
+        const totalDiscountAmount = discount + promoDiscount;
+        if (totalDiscountAmount > 0) {
+            let remainingDiscount = totalDiscountAmount * 100; // in cents
             for (let item of line_items) {
                 if (remainingDiscount <= 0) break;
                 
@@ -109,8 +122,11 @@ const verifyOrder = async (req,res) => {
                 await userModel.findByIdAndUpdate(order.userId, { $inc: { coins: coinsEarned } });
             }
 
-            // CLEAR CART ONLY ON SUCCESS
-            await userModel.findByIdAndUpdate(order.userId, { cartData: {} });
+            // CLEAR CART AND MARK FIRST ORDER USED ONLY ON SUCCESS
+            await userModel.findByIdAndUpdate(order.userId, { 
+                cartData: {}, 
+                isFirstOrder: false 
+            });
 
             res.json({success:true,message:"Paid"})
         }

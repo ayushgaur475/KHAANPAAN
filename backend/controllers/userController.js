@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import validator from "validator";
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 // login user
 const loginUser = async (req, res) => {
@@ -82,7 +83,7 @@ const getUserInfo = async (req, res) => {
         if (!user) {
             return res.json({ success: false, message: "User not found" });
         }
-        res.json({ success: true, name: user.name, coins: user.coins, email: user.email, phone: user.phone, photo: user.photo, bio: user.bio });
+        res.json({ success: true, name: user.name, coins: user.coins, email: user.email, phone: user.phone, photo: user.photo, bio: user.bio, isFirstOrder: user.isFirstOrder });
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: "Error" });
@@ -126,11 +127,9 @@ const sendOtp = async (req, res) => {
     user.otpExpire = otpExpire;
     await user.save();
 
-    // Nodemailer configuration (Switched to Brevo for Render compatibility)
+    // LIVE MODE: Using Gmail SMTP (Reliable for Vercel/Render on Port 587)
     const transporter = nodemailer.createTransport({
-      host: "smtp-relay.brevo.com",
-      port: 587,
-      secure: false, // Use STARTTLS
+      service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -141,7 +140,6 @@ const sendOtp = async (req, res) => {
       from: `"KHAANPAAN" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "KHAANPAAN Login OTP",
-      text: `Your OTP for login is: ${otp}. It will expire in 5 minutes.`,
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
           <h2 style="color: #ff4c24;">KHAANPAAN OTP</h2>
@@ -151,13 +149,17 @@ const sendOtp = async (req, res) => {
       `
     };
 
-    console.log(`DEBUG: Attempting to send OTP to ${email}...`);
-    await transporter.sendMail(mailOptions);
-    console.log(`✅ DEBUG: OTP sent successfully to ${email}`);
-    res.json({ success: true, message: "OTP sent to your email." });
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`✅ [GMAIL] OTP sent successfully to ${email}`);
+        res.json({ success: true, message: "OTP sent to your email." });
+    } catch (sendError) {
+        console.error("❌ [GMAIL ERROR]:", sendError); // Log the full error object
+        res.json({ success: false, message: `Error: ${sendError.message}` });
+    }
   } catch (error) {
-    console.error("❌ DEBUG ERROR: OTP Sending Failed:", error.message);
-    res.json({ success: false, message: "Error sending OTP." });
+    console.error("❌ DEBUG ERROR: OTP Logic Failed:", error.message);
+    res.json({ success: false, message: "Error processing OTP." });
   }
 };
 

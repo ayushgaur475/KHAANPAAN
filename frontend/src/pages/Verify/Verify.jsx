@@ -8,13 +8,17 @@ function Verify() {
     const [searchParams, setSearchParams] = useSearchParams();
     const success = searchParams.get("success");
     const orderId = searchParams.get("orderId");
-    const {url} = useContext(StoreContext);
+    const {url, setCartItems, fetchUserData, token} = useContext(StoreContext);
     const navigate = useNavigate();
 
     const verifyPayment = async ()=> {
         try {
             const response = await axios.post(url + "/api/order/verify", {success, orderId})
             if(response.data.success){
+                // Clear local cart items
+                setCartItems({});
+                // Refresh user data (coins, etc.)
+                if (token) fetchUserData(token);
                 // Redirect directly to the live tracking page for this order
                 navigate(`/track/${orderId}`);
             }

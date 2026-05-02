@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      unique: true,
       sparse: true,
     },
     otp: {
@@ -45,6 +44,10 @@ const userSchema = new mongoose.Schema(
     coins: {
       type: Number,
       default: 0
+    },
+    isFirstOrder: {
+      type: Boolean,
+      default: true
     }
   },
   { minimize: false }

@@ -183,6 +183,11 @@
   color: var(--text-color);
 }
 
+.discount-row {
+  color: #2e7d32 !important;
+  font-weight: 600;
+}
+
 .summary-hr {
   margin: 20px 0;
   border: none;

@@ -4,10 +4,34 @@ import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
 function Cart() {
-  const { cartItems, food_list, addToCart, removeFromCart, getTotalCartAmount, url } =
+  const { cartItems, food_list, addToCart, removeFromCart, getTotalCartAmount, url, userData, appliedPromo, setAppliedPromo } =
     useContext(StoreContext);
 
-    const navigate = useNavigate();
+  const [promoInput, setPromoInput] = React.useState("");
+
+  const handleApplyPromo = () => {
+    if (promoInput.toUpperCase() === "FOOD30") {
+        // Treat undefined or null as true (First Timer)
+        const isFirstOrder = userData.isFirstOrder !== false; 
+        
+        if (!isFirstOrder) {
+            alert("Invalid or already used promo code!");
+        } else if (subtotal < 100) {
+            alert("This code is only for orders above ₹100!");
+        } else {
+            setAppliedPromo("FOOD30");
+            alert("Promo Code Applied Successfully!");
+        }
+    } else {
+        alert("Invalid Promo Code");
+    }
+  };
+
+  const navigate = useNavigate();
+  const subtotal = getTotalCartAmount();
+  const isFirstTimer = userData.isFirstOrder !== false;
+  const discount = (appliedPromo === "FOOD30" && isFirstTimer && subtotal >= 100) ? Math.floor(subtotal * 0.3) : 0;
+
   return (
     <div className="cart">
       <h2 className="cart-title">Your Shopping Cart</h2>
@@ -47,9 +71,10 @@ function Cart() {
           <div className="promo-container">
             <p className="promo-text">Have a promo code? Enter it here</p>
             <div className="cart-promocode-input">
-              <input type="text" placeholder="Promo Code"></input>
-              <button>Apply</button>
+              <input type="text" placeholder="Promo Code" value={promoInput} onChange={(e) => setPromoInput(e.target.value)}></input>
+              <button onClick={handleApplyPromo}>Apply</button>
             </div>
+            {appliedPromo && <p style={{color: "green", marginTop: "10px", fontWeight: "600"}}>Code {appliedPromo} Applied!</p>}
           </div>
         </div>
 
@@ -57,16 +82,22 @@ function Cart() {
           <h2 className="summary-title">Order Summary</h2>
           <div className="cart-total-details">
             <p>Subtotal</p>
-            <p>₹{getTotalCartAmount() > 0 ? getTotalCartAmount() : 0}</p>
+            <p>₹{subtotal > 0 ? subtotal : 0}</p>
           </div>
+          {discount > 0 && (
+            <div className="cart-total-details discount-row">
+              <p>Promo Discount (FOOD30)</p>
+              <p>-₹{discount}</p>
+            </div>
+          )}
           <div className="cart-total-details">
             <p>Delivery Fee</p>
-            <p>₹{getTotalCartAmount() === 0 ? 0 : 2}</p>
+            <p>₹{subtotal === 0 ? 0 : 2}</p>
           </div>
           <hr className="summary-hr" />
           <div className="cart-total-details total-row">
             <b>Total</b>
-            <b>₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}</b>
+            <b>₹{subtotal === 0 ? 0 : subtotal + 2 - discount}</b>
           </div>
           <button className="checkout-btn" onClick={() => navigate('/order')}>PROCEED TO CHECKOUT</button>
         </div>
