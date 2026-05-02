@@ -48,7 +48,8 @@ function PlaceOrder() {
     });
     if (response.data.success) {
       const { session_url } = response.data;
-      window.location.replace(session_url);
+      window.open(session_url, "_blank");
+      navigate("/myorders"); // Optional: Navigate to orders page in the background tab
     } else {
       alert(response.data.message);
     }
