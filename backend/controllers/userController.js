@@ -123,21 +123,15 @@ const sendOtp = async (req, res) => {
     user.otpExpire = otpExpire;
     await user.save();
 
-    // Nodemailer configuration (Forced IPv4 for Render)
+    // Nodemailer configuration (Switched to Brevo for Render compatibility)
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp-relay.brevo.com",
       port: 587,
       secure: false, // Use STARTTLS
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
-      connectionTimeout: 10000, // 10 seconds
-      greetingTimeout: 10000,
-      socketTimeout: 10000,
-      tls: {
-        rejectUnauthorized: false // Helps with some cloud firewalls
-      }
     });
 
     const mailOptions = {
