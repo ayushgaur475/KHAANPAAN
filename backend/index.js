@@ -33,13 +33,16 @@ import { gridfsBucket } from './config/db.js';
 
 app.get("/images/:filename", async (req, res) => {
     try {
+        console.log(`DEBUG: Received request for image: ${req.params.filename}`);
         const file = await gridfsBucket.find({ filename: req.params.filename }).toArray();
         if (!file || file.length === 0) {
+            console.error(`DEBUG ERROR: Image not found in GridFS: ${req.params.filename}`);
             return res.status(404).json({ err: 'No file exists' });
         }
         const readStream = gridfsBucket.openDownloadStreamByName(req.params.filename);
         readStream.pipe(res);
     } catch (err) {
+        console.error(`DEBUG ERROR: GridFS Stream Error: ${err.message}`);
         res.status(500).json({ err: 'Error streaming file' });
     }
 });
