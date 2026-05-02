@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, RecaptchaVerifier } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
+// Replace these placeholders with your actual Firebase config!
 const firebaseConfig = {
   apiKey: "AIzaSyAm-RvWThyWK-LemqmJsAeygqQRrUzy_xk",
   authDomain: "khaanpaan-7c6fb.firebaseapp.com",
@@ -11,8 +12,8 @@ const firebaseConfig = {
   measurementId: "G-TVMZT0VDBC"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
-export { auth, RecaptchaVerifier };
+export { auth, googleProvider, signInWithPopup };

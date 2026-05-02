@@ -79,6 +79,9 @@ const registerUser = async (req, res) => {
 const getUserInfo = async (req, res) => {
     try {
         const user = await userModel.findById(req.body.userId);
+        if (!user) {
+            return res.json({ success: false, message: "User not found" });
+        }
         res.json({ success: true, name: user.name, coins: user.coins, email: user.email, phone: user.phone, photo: user.photo, bio: user.bio });
     } catch (error) {
         console.log(error);
@@ -210,4 +213,28 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo };
+const googleLogin = async (req, res) => {
+  const { email, name, photo } = req.body;
+  try {
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+      // Create new user if they don't exist
+      user = new userModel({
+        name,
+        email,
+        photo: photo || "",
+        password: "" // No password for Google users
+      });
+      await user.save();
+    }
+
+    const token = createToken(user._id);
+    res.json({ success: true, token });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error during Google Login" });
+  }
+};
+
+export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin };
