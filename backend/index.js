@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cors({
     origin: function (origin, callback) {
         // Allow any local development URL or the official Vercel frontend
-        if (!origin || origin.startsWith("http://localhost") || origin === "https://khaanpaan-frontend.vercel.app") {
+        if (!origin || origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1") || origin === "https://khaanpaan-frontend.vercel.app") {
             callback(null, true);
         } else {
             callback(new Error("Not allowed by CORS"));
