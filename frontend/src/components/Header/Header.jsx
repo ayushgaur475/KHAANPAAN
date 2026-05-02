@@ -2,32 +2,17 @@ import React, { useState } from 'react'
 import './Header.css'
 
 function Header() {
-  // Array of local video paths. 
-  // You need to place your video files inside the "frontend/public" folder!
-  const videos = [
-    "/video1.mp4"
-  ];
-
-  const [playCount, setPlayCount] = useState(0);
-
-  const handleVideoEnd = () => {
-    setPlayCount((prevCount) => prevCount + 1);
-  };
-
-  // Currently you only have video1.mp4 in your folder. 
-  // You can add more here if you upload them to the public folder!
-  const currentVideoSrc = videos[playCount % videos.length];
 
   return (
     <div className='header'>
       <video
-        key={playCount}
         autoPlay
         muted
+        loop
         playsInline
+        preload="auto"
         className='header-video'
-        src={currentVideoSrc}
-        onEnded={handleVideoEnd}
+        src="/video1.mp4"
       >
         Your browser does not support the video tag.
       </video>
