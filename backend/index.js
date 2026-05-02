@@ -13,7 +13,11 @@ const port = process.env.PORT || 5001;
 
 // middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["https://khaanpaan-frontend.vercel.app", "http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 
 // DB connection & Server Start
 connectDB().then(() => {
@@ -37,7 +41,7 @@ connectDB().then(() => {
         }
     });
 
-    app.use("/api/user/", userRouter);
+    app.use("/api/user", userRouter); // Removed trailing slash
     app.use("/api/cart", cartRouter);
     app.use("/api/order", orderRouter)
 
