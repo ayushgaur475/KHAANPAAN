@@ -49,6 +49,9 @@ function Navbar({ url, token, setToken, adminPhoto }) {
           <img className='profile' src={profileSrc} alt='Profile'></img>
           <div className="status-dot"></div>
         </div>
+        <button className="logout-btn" onClick={() => setToken("")} title="Logout">
+           Logout
+        </button>
       </div>
     </div>
   )
