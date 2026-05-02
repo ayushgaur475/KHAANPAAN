@@ -90,28 +90,7 @@ const getUserInfo = async (req, res) => {
     }
 }
 
-const phoneLogin = async (req, res) => {
-  const { phone, name } = req.body;
-  try {
-    let user = await userModel.findOne({ phone });
 
-    if (!user) {
-      // Create new user if doesn't exist
-      user = new userModel({
-        name: name || "User",
-        phone: phone,
-        email: phone + "@khaanpaan.com", // Dummy email to satisfy any existing logic that expects email
-      });
-      await user.save();
-    }
-
-    const token = createToken(user._id);
-    res.json({ success: true, token });
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
-  }
-};
 
 const sendOtp = async (req, res) => {
   const { email } = req.body;
