@@ -195,18 +195,21 @@ const updateStatus = async (req,res) => {
 // api for getting analytics data
 const getAnalytics = async (req, res) => {
     try {
-        const orders = await orderModel.find({ payment: true });
+        // Use a single query for total stats to be more efficient
+        const orders = await orderModel.find({ payment: true }).sort({ date: -1 });
         const users = await userModel.find({});
         
         let totalRevenue = 0;
         let todayRevenue = 0;
         let weekRevenue = 0;
         
-        const now = new Date();
-        const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+        // Accurate date boundaries
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
         
-        const lastWeek = new Date();
-        lastWeek.setDate(lastWeek.getDate() - 7);
+        const startOfWeek = new Date();
+        startOfWeek.setDate(startOfWeek.getDate() - 7);
+        startOfWeek.setHours(0, 0, 0, 0);
 
         orders.forEach(order => {
             totalRevenue += order.amount;
@@ -216,7 +219,7 @@ const getAnalytics = async (req, res) => {
                 todayRevenue += order.amount;
             }
             
-            if (orderDate >= lastWeek) {
+            if (orderDate >= startOfWeek) {
                 weekRevenue += order.amount;
             }
         });
@@ -228,7 +231,7 @@ const getAnalytics = async (req, res) => {
             weekRevenue,
             totalOrders: orders.length,
             totalUsers: users.length,
-            recentOrders: orders.slice(-5).reverse()
+            recentOrders: orders.slice(0, 5) // Already sorted by -1 above
         });
     } catch (error) {
         console.log(error);
