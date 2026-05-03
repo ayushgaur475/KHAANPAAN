@@ -41,21 +41,21 @@ const Customers = ({ url }) => {
         <div className="customers-list">
           <div className="list-header">
             <span>Customer</span>
-            <span>Email</span>
+            <span>Email Address</span>
             <span>Phone</span>
             <span>Joined On</span>
-            <span>Orders</span>
+            <span>Loyalty Coins</span>
           </div>
           {users.map((user, index) => (
             <div key={index} className="list-row">
               <div className="user-profile">
                 <img src={user.photo ? (user.photo.startsWith('http') ? user.photo : `${url}/images/${user.photo}`) : "https://img.icons8.com/ios-filled/50/ff4c24/user-male-circle.png"} alt="" />
-                <span>{user.name}</span>
+                <span className="user-name">{user.name}</span>
               </div>
-              <span>{user.email}</span>
-              <span>{user.phone || "Not provided"}</span>
-              <span>{new Date(user.createdAt || Date.now()).toLocaleDateString()}</span>
-              <span className="coin-count">🪙 {user.coins} Coins</span>
+              <span className="user-email">{user.email}</span>
+              <span className="user-phone">{user.phone || "—"}</span>
+              <span className="user-date">{new Date(user.createdAt || Date.now()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+              <span className="coin-count">🪙 {user.coins} KP Coins</span>
             </div>
           ))}
           {users.length === 0 && <p className="no-data">No customers registered yet.</p>}
