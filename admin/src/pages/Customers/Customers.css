@@ -66,9 +66,29 @@
     gap: 15px;
 }
 
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-profile img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ff4c24;
+    padding: 2px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(255, 76, 36, 0.15);
+    flex-shrink: 0;
+}
+
 .user-name {
     font-weight: 600;
     color: #1a1a1a;
+    font-size: 15px;
+    white-space: nowrap;
 }
 
 .user-email {
