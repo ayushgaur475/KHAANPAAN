@@ -15,8 +15,12 @@ const port = process.env.PORT || 5001;
 app.use(express.json());
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow any local development URL or the official Vercel frontend
-        if (!origin || origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1") || origin === "https://khaanpaan-frontend.vercel.app") {
+        // Allow any local development URL, the main frontend, or the admin dashboard
+        if (!origin || 
+            origin.startsWith("http://localhost") || 
+            origin.startsWith("http://127.0.0.1") || 
+            origin === "https://khaanpaan-frontend.vercel.app" ||
+            origin === "https://khaanpaan-admin.vercel.app") {
             callback(null, true);
         } else {
             callback(new Error("Not allowed by CORS"));
