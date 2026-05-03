@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin } from '../controllers/userController.js'
+import { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers } from '../controllers/userController.js'
 import authMiddleware from '../middleware/auth.js';
 import multer from 'multer';
 import { GridFsStorage } from 'multer-gridfs-storage';
@@ -29,5 +29,6 @@ userRouter.post("/verify-otp", verifyOtp)
 userRouter.post("/info", authMiddleware, getUserInfo)
 userRouter.post("/update", authMiddleware, upload.single("image"), updateUserInfo)
 userRouter.post("/google-login", googleLogin)
+userRouter.get("/list-users", listUsers)
 
 export default userRouter

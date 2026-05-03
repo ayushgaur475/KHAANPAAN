@@ -245,4 +245,14 @@ const googleLogin = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin };
+const listUsers = async (req, res) => {
+    try {
+        const users = await userModel.find({}).sort({ createdAt: -1 });
+        res.json({ success: true, data: users });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error fetching users" });
+    }
+}
+
+export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers };

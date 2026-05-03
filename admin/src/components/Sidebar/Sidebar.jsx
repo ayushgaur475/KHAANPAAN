@@ -22,6 +22,10 @@ function Sidebar() {
           <img src={assets.order_icon}></img>
           <p>Orders</p>
         </NavLink>
+        <NavLink to='/customers' className='sidebar-option'>
+          <img src="https://img.icons8.com/ios-filled/50/ff4c24/group.png"></img>
+          <p>Customers</p>
+        </NavLink>
       </div>
       
     </div>

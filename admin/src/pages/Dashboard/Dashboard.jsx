@@ -31,7 +31,7 @@ const Dashboard = ({ url, token }) => {
 
     useEffect(() => {
         fetchAnalytics();
-        const interval = setInterval(fetchAnalytics, 30000); // Update every 30 seconds
+        const interval = setInterval(fetchAnalytics, 10000); // Update every 10 seconds for real-time feel
         return () => clearInterval(interval);
     }, [token, stats.totalOrders]);
 

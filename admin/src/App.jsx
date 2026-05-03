@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login/Login'
 import Profile from './pages/Profile/Profile'
+import Customers from './pages/Customers/Customers'
 import { useState, useEffect } from 'react'
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
               <Route path='/orders' element={<Orders url={url} token={token} />} />
               <Route path='/list' element={<List url={url} token={token} />} />
               <Route path='/profile' element={<Profile url={url} token={token} setAdminPhoto={setAdminPhoto} />} />
+              <Route path='/customers' element={<Customers url={url} token={token} />} />
             </Routes>
           </div>
         </>

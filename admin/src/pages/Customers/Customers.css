@@ -1,0 +1,101 @@
+.customers-page {
+    padding: 30px;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.customers-header {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.customers-header h2 {
+    color: #1a1a1a;
+    font-size: 24px;
+}
+
+.customers-header p {
+    color: #666;
+}
+
+.refresh-btn {
+    align-self: flex-start;
+    padding: 8px 20px;
+    background: #ff4c24;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.refresh-btn:hover {
+    background: #e63e1c;
+}
+
+.customers-list {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.list-header {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+    padding: 15px 25px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.list-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+    padding: 15px 25px;
+    align-items: center;
+    border-bottom: 1px solid #f1f1f1;
+    transition: 0.2s;
+}
+
+.list-row:hover {
+    background: #fafafa;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-profile img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.coin-count {
+    color: #ff9800;
+    font-weight: 600;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+@media (max-width: 900px) {
+    .list-header, .list-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .list-header span:nth-child(n+3), .list-row span:nth-child(n+3) {
+        display: none;
+    }
+}
