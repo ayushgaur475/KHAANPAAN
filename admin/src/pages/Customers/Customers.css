@@ -88,7 +88,8 @@
     font-weight: 600;
     color: #1a1a1a;
     font-size: 15px;
-    white-space: nowrap;
+    line-height: 1.2;
+    display: block;
 }
 
 .user-email {
