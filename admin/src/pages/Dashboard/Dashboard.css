@@ -130,7 +130,19 @@
     border-bottom: none;
 }
 
-.user-id { color: #888; font-family: monospace; }
+.user-name-bold {
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.items-text {
+    color: #666;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 15px;
+}
 .amount { font-weight: 600; color: #333; }
 
 .status-pill {

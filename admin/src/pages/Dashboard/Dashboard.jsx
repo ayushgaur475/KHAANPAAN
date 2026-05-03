@@ -91,15 +91,19 @@ const Dashboard = ({ url, token }) => {
                 </div>
                 <div className="activity-table">
                     <div className="table-header">
-                        <span>Customer ID</span>
-                        <span>Items</span>
+                        <span>Customer Name</span>
+                        <span>Ordered Items</span>
                         <span>Amount</span>
                         <span>Status</span>
                     </div>
                     {stats.recentOrders.map((order, index) => (
                         <div key={index} className="table-row">
-                            <span className="user-id">...{order.userId.slice(-6)}</span>
-                            <span>{order.items.length} items</span>
+                            <span className="user-name-bold">{order.address.firstName} {order.address.lastName}</span>
+                            <span className="items-text">
+                                {order.items.map((item, idx) => (
+                                    item.name + (idx === order.items.length - 1 ? "" : ", ")
+                                ))}
+                            </span>
                             <span className="amount">₹{order.amount}</span>
                             <span className={`status-pill ${order.status.toLowerCase().replace(/ /g, '-')}`}>{order.status}</span>
                         </div>
