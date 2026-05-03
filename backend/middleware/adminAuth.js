@@ -13,7 +13,8 @@ const adminAuth = async (req, res, next) => {
         const token_decode = jwt.verify(token, process.env.JWT_SECRET);
         const user = await userModel.findById(token_decode.id);
         
-        if (!user || !user.isAdmin) {
+        // Ensure user exists AND is either marked as admin OR is the super admin email
+        if (!user || (!user.isAdmin && user.email !== "123@gmail.com")) {
             return res.json({
                 success: false,
                 message: "Not Authorized, Admin Access Only"
