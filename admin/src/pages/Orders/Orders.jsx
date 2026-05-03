@@ -6,14 +6,29 @@ import { assets } from "../../assets/assets";
 
 const Orders = ({ url, token }) => {
   const [orders, setOrders] = useState([]);
+  const [orderCount, setOrderCount] = useState(0);
 
   const fetchAllOrders = async () => {
-    const response = await axios.get(url + "/api/order/list", {headers:{token}});
-    if (response.data.success) {
-      setOrders(response.data.data);
-      console.log(response.data.data);
-    } else {
-      toast.error("Error");
+    try {
+      const response = await axios.get(url + "/api/order/list", {headers:{token}});
+      console.log("📦 Orders API Response:", response.data);
+      if (response.data.success) {
+        const newOrders = response.data.data;
+        
+        // Sound logic: If count increases, play sound
+        if (newOrders.length > orderCount && orderCount !== 0) {
+          const audio = new Audio('/notification.mp3');
+          audio.play().catch(e => console.log("Sound blocked by browser"));
+          toast.info("🛎️ New Order Received!");
+        }
+        
+        setOrders(newOrders);
+        setOrderCount(newOrders.length);
+      } else {
+        toast.error("Error fetching orders");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -43,7 +58,9 @@ const Orders = ({ url, token }) => {
 
   useEffect(() => {
     fetchAllOrders();
-  }, []);
+    const interval = setInterval(fetchAllOrders, 10000); // Auto-refresh every 10 seconds
+    return () => clearInterval(interval);
+  }, [token, orderCount]);
 
   return (
     <div className='orders-page'>
