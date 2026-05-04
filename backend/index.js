@@ -35,20 +35,18 @@ connectDB().then(() => {
     // api endpoints
     app.use("/api/food", foodRouter);
 
-    app.get("/images/:filename", async (req, res) => {
+    app.use("/images", express.static('uploads'));
+
+    // Fallback for GridFS if file doesn't exist in uploads (optional but good for compatibility)
+    app.get("/images/:filename", async (req, res, next) => {
         try {
             const bucket = getGridFSBucket();
-            if (!bucket) {
-                return res.status(500).json({ err: 'GridFS not initialized' });
-            }
+            if (!bucket) return next();
             const file = await bucket.find({ filename: req.params.filename }).toArray();
-            if (!file || file.length === 0) {
-                return res.status(404).json({ err: 'No file exists' });
-            }
-            const readStream = bucket.openDownloadStreamByName(req.params.filename);
-            readStream.pipe(res);
+            if (!file || file.length === 0) return next();
+            bucket.openDownloadStreamByName(req.params.filename).pipe(res);
         } catch (err) {
-            res.status(500).json({ err: 'Error streaming file' });
+            next();
         }
     });
 
