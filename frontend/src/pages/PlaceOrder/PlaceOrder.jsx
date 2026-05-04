@@ -207,7 +207,17 @@ function PlaceOrder() {
               )}
             </b>
           </div>
+          <div className="payment-methods-selection">
+            <p className="payment-label">Supported Payment Apps</p>
+            <div className="payment-icons-grid">
+              <div className="pay-icon-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google_Pay_Logo.svg" alt="GPay" /></div>
+              <div className="pay-icon-item"><img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/phonepe-logo-icon.png" alt="PhonePe" /></div>
+              <div className="pay-icon-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Paytm_logo.png" alt="Paytm" /></div>
+              <div className="pay-icon-item"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" /></div>
+            </div>
+          </div>
           <button type="submit" className="payment-btn">PROCEED TO PAYMENT</button>
+          <p className="payment-note">🔒 Secured by Stripe. All major UPI apps & cards supported.</p>
         </div>
       </div>
     </form>
