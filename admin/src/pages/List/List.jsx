@@ -3,12 +3,10 @@ import './List.css'
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-// Fallback placeholder for broken/missing images
-const PLACEHOLDER = 'https://via.placeholder.com/50x50/f3f4f6/aaa?text=🍽️';
+const PLACEHOLDER = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect width=%2250%22 height=%2250%22 fill=%22%23f3f4f6%22/%3E%3C/svg%3E';
 
 function List({url, token}) {
   const [list, setList] = useState([]);
-  const [loadedImages, setLoadedImages] = useState({});
   const fetchList = async() => {
     const response = await axios.get(`${url}/api/food/list`);
     console.log(response.data);
@@ -66,14 +64,11 @@ function List({url, token}) {
               return (
                 <div key={index} className='list-table-row'>
                   <div className="item-img-container">
-                    {!loadedImages[item._id] && <div className="img-skeleton" />}
                     <img
                       src={typeof item.image === 'string' && item.image.startsWith('http') ? item.image : `${url}/images/` + item.image}
                       alt={item.name}
-                      loading="lazy"
-                      style={{ display: loadedImages[item._id] ? 'block' : 'none' }}
-                      onLoad={() => setLoadedImages(prev => ({ ...prev, [item._id]: true }))}
-                      onError={(e) => { e.target.src = PLACEHOLDER; setLoadedImages(prev => ({ ...prev, [item._id]: true })); }}
+                      className="food-img"
+                      onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER; }}
                     />
                   </div>
                   <p className="item-name">{item.name}</p>
