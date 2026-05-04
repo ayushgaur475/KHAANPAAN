@@ -2,20 +2,16 @@ import express from 'express'
 import { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers } from '../controllers/userController.js'
 import authMiddleware from '../middleware/auth.js';
 import multer from 'multer';
-import { GridFsStorage } from 'multer-gridfs-storage';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const userRouter = express.Router();
 
-// GridFS Storage Engine
-const storage = new GridFsStorage({
-    url: process.env.MONGO_URI,
-    file: (req, file) => {
-        return {
-            filename: `${Date.now()}_${file.originalname}`,
-            bucketName: 'uploads'
-        };
+// Disk Storage Engine
+const storage = multer.diskStorage({
+    destination: "uploads",
+    filename: (req, file, cb) => {
+        return cb(null, `${Date.now()}_${file.originalname}`);
     }
 });
 
