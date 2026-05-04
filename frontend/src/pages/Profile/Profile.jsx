@@ -3,6 +3,7 @@ import './Profile.css';
 import { StoreContext } from '../../context/StoreContext';
 import { assets } from '../../assets/assets';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
   const { url, token, userData, setUserData } = useContext(StoreContext);
@@ -75,14 +76,14 @@ const Profile = () => {
           bio: response.data.data.bio,
           photo: response.data.data.photo,
         });
-        alert("Profile updated successfully!");
+        toast.success("Profile updated successfully!");
         setImage(false); // Reset selected image after successful upload
       } else {
-        alert(response.data.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error);
-      alert("Error updating profile.");
+      toast.error("Error updating profile.");
     }
     setLoading(false);
   };

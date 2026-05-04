@@ -12,6 +12,8 @@ import CartBar from './components/CartBar/CartBar'
 import TrackOrder from './pages/TrackOrder/TrackOrder'
 import Profile from './pages/Profile/Profile'
 import { useEffect } from 'react'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   console.log("🚀 DEBUG: APP COMPONENT LOADED - VERSION 2.0");
@@ -37,6 +39,7 @@ function App() {
   };
 
   return <>
+  <ToastContainer />
   {showLogin? <LoginPopup setShowLogin={setShowLogin}></LoginPopup>:<></>}
     <div className='app'>
       <Navbar setShowLogin={setShowLogin} theme={theme} toggleTheme={toggleTheme}/>
