@@ -27,6 +27,12 @@ const Customers = ({ url }) => {
     fetchUsers();
   }, []);
 
+  const getJoinedDate = (user) => {
+    if (user.createdAt) return new Date(user.createdAt);
+    if (user._id) return new Date(parseInt(user._id.substring(0, 8), 16) * 1000);
+    return new Date();
+  };
+
   return (
     <div className='customers-page'>
       <div className="customers-header">
@@ -54,7 +60,7 @@ const Customers = ({ url }) => {
               </div>
               <span className="user-email">{user.email}</span>
               <span className="user-phone">{user.phone || "—"}</span>
-              <span className="user-date">{new Date(user.createdAt || Date.now()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+              <span className="user-date">{getJoinedDate(user).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
               <span className="coin-count">🪙 {user.coins} KP Coins</span>
             </div>
           ))}

@@ -161,7 +161,7 @@ const verifyOrder = async (req,res) => {
 
 const userOrders = async (req,res) => {
     try {
-        const orders = await orderModel.find({userId:req.body.userId}).sort({date:-1});
+        const orders = await orderModel.find({userId:req.body.userId}).sort({date:-1}).lean();
         res.json({success:true,data:orders})
     } catch (error) {
         console.log(error);
@@ -172,7 +172,7 @@ const userOrders = async (req,res) => {
 // Listing orders for admin panel
 const listOrders = async (req,res) => {
     try {
-        const orders = await orderModel.find({}).sort({date:-1});
+        const orders = await orderModel.find({}).sort({date:-1}).lean();
         res.json({success:true,data:orders})
     } catch (error) {
         console.log(error);
@@ -195,14 +195,6 @@ const updateStatus = async (req,res) => {
 // api for getting analytics data
 const getAnalytics = async (req, res) => {
     try {
-        // Use a single query for total stats to be more efficient
-        const orders = await orderModel.find({ payment: true }).sort({ date: -1 });
-        const users = await userModel.find({});
-        
-        let totalRevenue = 0;
-        let todayRevenue = 0;
-        let weekRevenue = 0;
-        
         // Accurate date boundaries
         const startOfToday = new Date();
         startOfToday.setHours(0, 0, 0, 0);
@@ -211,27 +203,44 @@ const getAnalytics = async (req, res) => {
         startOfWeek.setDate(startOfWeek.getDate() - 7);
         startOfWeek.setHours(0, 0, 0, 0);
 
-        orders.forEach(order => {
-            totalRevenue += order.amount;
-            const orderDate = new Date(order.date);
-            
-            if (orderDate >= startOfToday) {
-                todayRevenue += order.amount;
+        // 1. Get counts instantly without downloading whole documents
+        const totalUsers = await userModel.countDocuments();
+        const totalOrders = await orderModel.countDocuments({ payment: true });
+
+        // 2. Get only the top 5 recent orders
+        const recentOrders = await orderModel.find({ payment: true }).sort({ date: -1 }).limit(5);
+
+        // 3. Calculate revenues using MongoDB Aggregation (blazing fast)
+        const revenueAggregation = await orderModel.aggregate([
+            { $match: { payment: true } },
+            { 
+                $group: { 
+                    _id: null, 
+                    totalRevenue: { $sum: "$amount" },
+                    todayRevenue: { 
+                        $sum: { 
+                            $cond: [ { $gte: ["$date", startOfToday] }, "$amount", 0 ] 
+                        } 
+                    },
+                    weekRevenue: { 
+                        $sum: { 
+                            $cond: [ { $gte: ["$date", startOfWeek] }, "$amount", 0 ] 
+                        } 
+                    }
+                } 
             }
-            
-            if (orderDate >= startOfWeek) {
-                weekRevenue += order.amount;
-            }
-        });
+        ]);
+
+        const revenueData = revenueAggregation[0] || { totalRevenue: 0, todayRevenue: 0, weekRevenue: 0 };
 
         res.json({
             success: true,
-            totalRevenue,
-            todayRevenue,
-            weekRevenue,
-            totalOrders: orders.length,
-            totalUsers: users.length,
-            recentOrders: orders.slice(0, 5) // Already sorted by -1 above
+            totalRevenue: revenueData.totalRevenue,
+            todayRevenue: revenueData.todayRevenue,
+            weekRevenue: revenueData.weekRevenue,
+            totalOrders,
+            totalUsers,
+            recentOrders
         });
     } catch (error) {
         console.log(error);
