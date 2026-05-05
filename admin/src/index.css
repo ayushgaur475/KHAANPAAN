@@ -81,7 +81,12 @@ hr {
 
 .app-content {
   display: flex;
-  min-height: calc(100vh - 70px); /* Adjust based on navbar height */
+  width: 100%;
+  min-height: calc(100vh - 70px);
+}
+
+.app-content > *:last-child {
+  flex: 1;
 }
 
 @media (max-width: 768px) {
