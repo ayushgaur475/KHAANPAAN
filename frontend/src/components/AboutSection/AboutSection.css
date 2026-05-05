@@ -255,25 +255,29 @@
 
     .stats-container {
         flex-direction: column;
-        border-radius: 25px;
-        padding: 30px;
-        gap: 20px;
-        width: 100%;
-        max-width: 400px;
+        border-radius: 30px;
+        padding: 35px 25px;
+        gap: 25px;
+        width: 90%;
+        max-width: 380px;
+        background: var(--surface-color);
+        box-shadow: 0 15px 40px var(--shadow-color);
     }
 
     .stat-item {
         width: 100%;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-left: 15%;
     }
 
     .stat-divider {
-        width: 60%;
+        width: 80%;
         height: 1px;
+        opacity: 0.3;
     }
 
     .floating-item {
         width: 60px;
-        opacity: 0.3;
+        opacity: 0.2;
     }
 }
