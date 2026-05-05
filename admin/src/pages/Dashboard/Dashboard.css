@@ -1,7 +1,7 @@
 .dashboard {
     width: 100%;
     padding: 30px;
-    background-color: #f9f9f9;
+    background-color: var(--bg-color);
 }
 
 .dashboard-header {
@@ -11,11 +11,11 @@
 .dashboard-header h2 {
     font-size: 28px;
     font-weight: 700;
-    color: #333;
+    color: var(--text-main);
 }
 
 .dashboard-header p {
-    color: #666;
+    color: var(--text-muted);
     margin-top: 5px;
 }
 
@@ -27,13 +27,14 @@
 }
 
 .stat-card {
-    background: white;
+    background: var(--surface-color);
     padding: 25px;
     border-radius: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
     transition: transform 0.3s ease;
 }
 
@@ -43,7 +44,7 @@
 
 .stat-info p {
     font-size: 14px;
-    color: #888;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -52,7 +53,7 @@
 .stat-info h3 {
     font-size: 24px;
     font-weight: 700;
-    color: #333;
+    color: var(--text-main);
 }
 
 .stat-icon-bg {
@@ -68,10 +69,11 @@
 .stat-card.users { border-left: 5px solid #9c27b0; }
 
 .recent-activity {
-    background: white;
+    background: var(--surface-color);
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
 }
 
 .activity-header {
@@ -83,7 +85,7 @@
 
 .activity-header h3 {
     font-size: 20px;
-    color: #333;
+    color: var(--text-main);
 }
 
 .refresh-btn {
@@ -115,15 +117,15 @@
 
 .table-header {
     font-weight: 600;
-    color: #666;
-    border-bottom: 2px solid #eee;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border-color);
     font-size: 14px;
 }
 
 .table-row {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
     font-size: 14px;
-    color: #444;
+    color: var(--text-main);
 }
 
 .table-row:last-child {
@@ -132,18 +134,18 @@
 
 .user-name-bold {
     font-weight: 700;
-    color: #1a1a1a;
+    color: var(--text-main);
 }
 
 .items-text {
-    color: #666;
+    color: var(--text-muted);
     font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 15px;
 }
-.amount { font-weight: 600; color: #333; }
+.amount { font-weight: 600; color: var(--text-main); }
 
 .status-pill {
     padding: 5px 12px;
