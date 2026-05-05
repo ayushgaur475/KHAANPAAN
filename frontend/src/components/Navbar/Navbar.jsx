@@ -8,7 +8,20 @@ function Navbar({setShowLogin, theme, toggleTheme}) {
     const [menu, setMenu] = useState("home");
 
     const {getTotalCartAmount, token, setToken, search, setSearch, showSearch, setShowSearch, userData, url} = useContext(StoreContext);
+    const [localSearch, setLocalSearch] = useState("");
     const navigate = useNavigate();
+
+    const handleSearch = (e) => {
+      if (e.key === "Enter") {
+        setSearch(localSearch);
+        // Scroll to food display
+        const foodDisplay = document.getElementById('food-display');
+        if (foodDisplay) {
+          foodDisplay.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+
     const logout = () => {
        localStorage.removeItem("token");
        setToken("");
@@ -31,8 +44,9 @@ function Navbar({setShowLogin, theme, toggleTheme}) {
               <input 
                 type="text" 
                 placeholder="Search for delicious food..." 
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={localSearch}
+                onChange={(e) => setLocalSearch(e.target.value)}
+                onKeyDown={handleSearch}
                 className="navbar-search-input"
                 autoFocus
               />
