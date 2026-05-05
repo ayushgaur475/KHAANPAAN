@@ -12,22 +12,22 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 20px;
 }
 
 .page-title {
     font-size: 22px;
     font-weight: 800;
-    color: #1a1a1a;
+    color: var(--text-main);
     letter-spacing: -0.5px;
     margin: 0;
 }
 
 .item-count {
     font-size: 14px;
-    color: #666;
-    background: #f1f1f1;
+    color: var(--text-muted);
+    background: var(--bg-color);
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: 600;
@@ -36,10 +36,11 @@
 .list-table {
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--surface-color);
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-md);
     overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 .list-table-header {
@@ -47,13 +48,13 @@
     grid-template-columns: 80px 2fr 1fr 1fr 1.2fr 100px;
     align-items: center;
     padding: 18px 25px;
-    background: #fafafa;
+    background: var(--surface-color);
     font-size: 13px;
-    color: #444;
+    color: var(--text-muted);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .list-table-row {
@@ -61,9 +62,10 @@
     grid-template-columns: 80px 2fr 1fr 1fr 1.2fr 100px;
     align-items: center;
     padding: 15px 25px;
-    border-bottom: 1px solid #f8f8f8;
+    border-bottom: 1px solid var(--border-color);
     transition: all 0.2s ease;
     font-size: 15px;
+    color: var(--text-main);
 }
 
 .list-table-row:hover {
@@ -76,9 +78,9 @@
     height: 45px;
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid #eee;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    background: #f3f4f6;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    background: var(--bg-color);
 }
 
 .item-img-container img,
@@ -97,7 +99,7 @@
 
 .item-name {
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--text-main);
     font-size: 15px;
 }
 
