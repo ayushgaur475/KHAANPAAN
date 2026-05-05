@@ -55,3 +55,81 @@ body{
     opacity: 1;
   }
 }
+
+/* INSTALL BANNER STYLING */
+.install-banner {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 500px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 15px 25px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2000;
+  box-shadow: 0 15px 40px var(--shadow-color);
+  animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.install-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.install-logo {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(255, 76, 36, 0.2);
+}
+
+.install-text p {
+  font-weight: 700;
+  color: var(--text-dark);
+  font-size: 15px;
+}
+
+.install-text span {
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+.install-btn {
+  background-color: #ff4c24;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.install-btn:hover {
+  background-color: #e83a14;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(255, 76, 36, 0.3);
+}
+
+@keyframes slideDown {
+  from { transform: translate(-50%, -100%); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .install-banner {
+    top: 20px;
+    padding: 12px 18px;
+  }
+  .install-text p { font-size: 13px; }
+  .install-text span { display: none; }
+  .install-btn { padding: 8px 15px; font-size: 12px; }
+}

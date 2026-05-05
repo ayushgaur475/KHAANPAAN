@@ -19,7 +19,26 @@ function App() {
   console.log("🚀 DEBUG: APP COMPONENT LOADED - VERSION 2.0");
   const [showLogin, setShowLogin] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [installPrompt, setInstallPrompt] = useState(null);
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    });
+  }, []);
+
+  const handleInstallClick = () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    installPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      }
+      setInstallPrompt(null);
+    });
+  };
 
   useEffect(() => {
     window.scrollTo({
@@ -46,7 +65,19 @@ function App() {
   <ToastContainer />
   {showLogin? <LoginPopup setShowLogin={setShowLogin}></LoginPopup>:<></>}
     <div className='app'>
-      <Navbar setShowLogin={setShowLogin} theme={theme} toggleTheme={toggleTheme}/>
+      <Navbar setShowLogin={setShowLogin} theme={theme} toggleTheme={toggleTheme} installPrompt={installPrompt} handleInstallClick={handleInstallClick}/>
+      {installPrompt && (
+        <div className="install-banner">
+          <div className="install-content">
+            <img src={assets.logo} alt="Logo" className="install-logo" />
+            <div className="install-text">
+              <p>Download KhaanPaan App</p>
+              <span>Install for a faster experience!</span>
+            </div>
+          </div>
+          <button className="install-btn" onClick={handleInstallClick}>Install</button>
+        </div>
+      )}
       <Routes>
         <Route path = '/' element={<Home setShowLogin={setShowLogin}/>}></Route>
         <Route path = '/Cart' element={<Cart/>}></Route>
