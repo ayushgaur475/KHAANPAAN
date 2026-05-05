@@ -22,7 +22,11 @@ function App() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
   }, [pathname]);
 
   useEffect(() => {
@@ -54,7 +58,7 @@ function App() {
       </Routes>
     </div>
     <Footer></Footer>
-    <CartBar />
+    {pathname !== '/Cart' && <CartBar />}
     </>
 }
 
