@@ -20,7 +20,8 @@ app.use(cors({
             origin.startsWith("http://localhost") || 
             origin.startsWith("http://127.0.0.1") || 
             origin === "https://khaanpaan-frontend.vercel.app" ||
-            origin === "https://khaanpaan-admin.vercel.app") {
+            origin === "https://khaanpaan-admin.vercel.app" ||
+            origin === "https://khaanpaan-backend.onrender.com") {
             callback(null, true);
         } else {
             callback(new Error("Not allowed by CORS"));
@@ -35,6 +36,7 @@ connectDB().then(() => {
     // api endpoints
     app.use("/api/food", foodRouter);
 
+    app.use("/images", express.static('images'));
     app.use("/images", express.static('uploads'));
 
     // Fallback for GridFS if file doesn't exist in uploads (optional but good for compatibility)
