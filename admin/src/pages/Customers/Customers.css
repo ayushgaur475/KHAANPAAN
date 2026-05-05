@@ -1,6 +1,6 @@
 .customers-page {
     padding: 30px;
-    background: #f8f9fa;
+    background: var(--bg-color);
     min-height: 100vh;
 }
 
@@ -12,12 +12,12 @@
 }
 
 .customers-header h2 {
-    color: #1a1a1a;
+    color: var(--text-main);
     font-size: 24px;
 }
 
 .customers-header p {
-    color: #666;
+    color: var(--text-muted);
 }
 
 .refresh-btn {
@@ -37,20 +37,21 @@
 }
 
 .customers-list {
-    background: white;
+    background: var(--surface-color);
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-md);
     overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 .list-header {
     display: grid;
     grid-template-columns: 1.5fr 2fr 1.2fr 1fr 1fr;
     padding: 18px 25px;
-    background: #fff;
-    border-bottom: 1px solid #eee;
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
     font-weight: 700;
-    color: #444;
+    color: var(--text-muted);
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 0.5px;
@@ -61,7 +62,7 @@
     grid-template-columns: 1.5fr 2fr 1.2fr 1fr 1fr;
     padding: 20px 25px;
     align-items: center;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid var(--border-color);
     transition: 0.2s;
     gap: 15px;
 }
@@ -79,28 +80,28 @@
     object-fit: cover;
     border: 2px solid #ff4c24;
     padding: 2px;
-    background: #fff;
+    background: var(--surface-color);
     box-shadow: 0 4px 10px rgba(255, 76, 36, 0.15);
     flex-shrink: 0;
 }
 
 .user-name {
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--text-main);
     font-size: 15px;
     line-height: 1.2;
     display: block;
 }
 
 .user-email {
-    color: #555;
+    color: var(--text-muted);
     font-size: 14px;
     word-break: break-all;
     padding-right: 10px;
 }
 
 .user-phone, .user-date {
-    color: #777;
+    color: var(--text-muted);
     font-size: 14px;
 }
 
