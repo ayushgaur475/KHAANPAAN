@@ -130,14 +130,17 @@
 
 .cart-promocode-input {
   display: flex;
-  background-color: var(--hover-bg);
-  border-radius: 10px;
+  background-color: #fff2f0; /* Soft tint to distinguish from background */
+  border-radius: 50px;
+  border: 1px solid #ff4c24;
   overflow: hidden;
+  margin-top: 10px;
 }
 
 .cart-promocode-input input {
   flex: 1;
-  padding: 15px;
+  min-width: 0; /* Important for flex child */
+  padding: 12px 20px;
   border: none;
   outline: none;
   background-color: transparent;
@@ -146,7 +149,8 @@
 }
 
 .cart-promocode-input button {
-  padding: 0 30px;
+  flex-shrink: 0; /* Prevents button from vanishing */
+  padding: 12px 30px;
   background-color: #ff4c24;
   color: white;
   border: none;
@@ -155,11 +159,12 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
   font-size: 13px;
+  border-radius: 0 50px 50px 0;
 }
 
 .cart-promocode-input button:hover {
   background-color: #e83a14;
-  box-shadow: -2px 0 10px rgba(255, 76, 36, 0.2);
+  padding-left: 35px; /* Subtle expansion effect */
 }
 
 .cart-total-container {
