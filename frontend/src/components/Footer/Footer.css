@@ -57,12 +57,37 @@
     border: none;
 }
 @media (max-width: 750px){
+    .footer {
+        padding: 40px 20px 100px 20px; /* Extra bottom padding for mobile nav */
+        margin-top: 60px;
+    }
     .footer-content{
         display: flex;
         flex-direction: column;
-        gap: 35px;
+        gap: 25px;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-logo {
+        width: 120px;
+        margin: 0 auto;
+    }
+    .footer-content-left p {
+        font-size: 13px;
+        line-height: 1.5;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    .footer-content-left, .footer-content-right, .footer-content-centre {
+        align-items: center;
+        gap: 15px;
+    }
+    .footer-social-icons img {
+        width: 30px;
+        margin: 8px;
     }
     .footer-copyright{
         text-align: center;
+        font-size: 12px;
     }
 }
