@@ -83,7 +83,7 @@ const getUserInfo = async (req, res) => {
         if (!user) {
             return res.json({ success: false, message: "User not found" });
         }
-        res.json({ success: true, name: user.name, coins: user.coins, email: user.email, phone: user.phone, photo: user.photo, bio: user.bio, isFirstOrder: user.isFirstOrder });
+        res.json({ success: true, name: user.name, coins: user.coins, email: user.email, phone: user.phone, photo: user.photo, bio: user.bio, isFirstOrder: user.isFirstOrder, addresses: user.addresses || [] });
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: "Error" });
@@ -255,4 +255,38 @@ const listUsers = async (req, res) => {
     }
 }
 
-export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers };
+const addAddress = async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const { address } = req.body;
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.json({ success: false, message: "User not found" });
+        }
+        user.addresses.push(address);
+        await user.save();
+        res.json({ success: true, message: "Address added successfully", addresses: user.addresses });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error adding address" });
+    }
+}
+
+const deleteAddress = async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const { index } = req.body;
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.json({ success: false, message: "User not found" });
+        }
+        user.addresses.splice(index, 1);
+        await user.save();
+        res.json({ success: true, message: "Address deleted successfully", addresses: user.addresses });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error deleting address" });
+    }
+}
+
+export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers, addAddress, deleteAddress };

@@ -21,6 +21,7 @@ function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [installPrompt, setInstallPrompt] = useState(null);
+  const [isBannerDismissed, setIsBannerDismissed] = useState(false);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -39,6 +40,10 @@ function App() {
       }
       setInstallPrompt(null);
     });
+  };
+
+  const dismissBanner = () => {
+    setIsBannerDismissed(true);
   };
 
   useEffect(() => {
@@ -67,9 +72,10 @@ function App() {
   {showLogin? <LoginPopup setShowLogin={setShowLogin}></LoginPopup>:<></>}
     <div className='app'>
       <Navbar setShowLogin={setShowLogin} theme={theme} toggleTheme={toggleTheme} installPrompt={installPrompt} handleInstallClick={handleInstallClick}/>
-      {installPrompt && (
+      {installPrompt && !isBannerDismissed && (
         <div className="install-banner">
           <div className="install-content">
+            <button className="close-banner" onClick={dismissBanner}>&times;</button>
             <img src={assets.logo} alt="Logo" className="install-logo" />
             <div className="install-text">
               <p>Download KhaanPaan App</p>

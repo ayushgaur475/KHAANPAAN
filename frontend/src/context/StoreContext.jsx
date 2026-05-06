@@ -11,7 +11,7 @@ const StoreContextProvider = (props) => {
   const [food_list, setFoodList] = useState(local_food_list);
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [userData, setUserData] = useState({ name: "", coins: 0, email: "", phone: "", photo: "", bio: "", isFirstOrder: true });
+  const [userData, setUserData] = useState({ name: "", coins: 0, email: "", phone: "", photo: "", bio: "", isFirstOrder: true, addresses: [] });
   const [appliedPromo, setAppliedPromo] = useState(null);
 
   const fetchUserData = async (token) => {
@@ -24,7 +24,8 @@ const StoreContextProvider = (props) => {
         phone: response.data.phone || "",
         photo: response.data.photo || "",
         bio: response.data.bio || "",
-        isFirstOrder: response.data.isFirstOrder
+        isFirstOrder: response.data.isFirstOrder,
+        addresses: response.data.addresses || []
       });
     }
   }

@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema(
     isFirstOrder: {
       type: Boolean,
       default: true
+    },
+    addresses: {
+      type: Array,
+      default: []
     }
   },
   { minimize: false, timestamps: true }
