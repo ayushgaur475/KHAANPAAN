@@ -1,8 +1,8 @@
-const CACHE_NAME = 'khaanpaan-v1';
+const CACHE_NAME = 'khaanpaan-v2';
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/vite.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -28,13 +28,20 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Use Network-First strategy for the main page and JS/CSS assets
+  if (event.request.mode === 'navigate' || event.request.destination === 'script' || event.request.destination === 'style') {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Use Cache-First for images and other static assets
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
+        return response || fetch(event.request);
       })
   );
 });
