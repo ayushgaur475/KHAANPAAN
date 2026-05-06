@@ -17,7 +17,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  console.log("🚀 DEBUG: APP COMPONENT LOADED - VERSION 2.0");
+  console.log("🚀 DEBUG: APP COMPONENT LOADED - VERSION 2.1 - FRESH BUILD");
   const [showLogin, setShowLogin] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [installPrompt, setInstallPrompt] = useState(null);
