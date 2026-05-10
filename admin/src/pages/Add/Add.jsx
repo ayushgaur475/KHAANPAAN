@@ -11,7 +11,8 @@ function Add({url, token}) {
         name: "",
         description: "",
         price: "",
-        category:"Salad"
+        category: "Salad",
+        veg: true
     })
     const onChangeHandler = (event) => {
       const name = event.target.name;
@@ -26,14 +27,16 @@ function Add({url, token}) {
        formData.append("description", data.description)
        formData.append("price", Number(data.price))
        formData.append("category", data.category)
+       formData.append("veg", data.veg)
        formData.append("image", image)
-       const response = await  axios.post(`${url}/api/food/add`, formData, {headers:{token}})
+       const response = await axios.post(`${url}/api/food/add`, formData, {headers:{token}})
        if(response.data.success){
           setData({
             name: "",
             description: "",
             price: "",
-            category:"Salad"
+            category: "Salad",
+            veg: true
           })
           setImage(false)
           toast.success(response.data.message)
@@ -78,6 +81,13 @@ function Add({url, token}) {
                       <option value="Indian">Indian</option>
                       <option value="Beverages">Beverages</option>
                       <option value="Bread">Bread</option>
+                   </select>
+              </div>
+              <div className='add-dietary flex-col'>
+                  <p className="label-text">Dietary Info</p>
+                  <select className="input-field" onChange={(e) => setData(d => ({...d, veg: e.target.value === "true"}))} name='veg'>
+                      <option value="true">Vegetarian (Veg)</option>
+                      <option value="false">Non-Vegetarian</option>
                   </select>
               </div>
               <div className='add-price flex-col'>

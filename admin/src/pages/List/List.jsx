@@ -54,6 +54,7 @@ function List({url, token}) {
             <b>Image</b>
             <b>Name</b>
             <b>Category</b>
+            <b>Dietary</b>
             <b>Price</b>
             <b>Stock</b>
             <b>Action</b>
@@ -73,6 +74,9 @@ function List({url, token}) {
                   </div>
                   <p className="item-name">{item.name}</p>
                   <p className="item-category-badge">{item.category}</p>
+                  <p className={`item-dietary-badge ${item.veg ? 'veg' : 'non-veg'}`}>
+                    {item.veg ? "🟢 Veg" : "🔴 Non-Veg"}
+                  </p>
                   <p className="item-price">₹{item.price}</p>
                   <div className="item-stock">
                     <button 

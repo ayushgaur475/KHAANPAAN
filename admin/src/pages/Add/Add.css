@@ -80,11 +80,12 @@
     border-color: var(--primary-color);
 }
 .add-category-price {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
 }
 
-.add-category, .add-price {
+.add-category, .add-price, .add-dietary {
     flex: 1;
 }
 

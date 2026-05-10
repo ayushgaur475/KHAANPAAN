@@ -45,7 +45,7 @@
 
 .list-table-header {
     display: grid;
-    grid-template-columns: 80px 2fr 1fr 1fr 1.2fr 100px;
+    grid-template-columns: 80px 2fr 1fr 1fr 1fr 1.2fr 80px;
     align-items: center;
     padding: 18px 25px;
     background: var(--surface-color);
@@ -59,13 +59,31 @@
 
 .list-table-row {
     display: grid;
-    grid-template-columns: 80px 2fr 1fr 1fr 1.2fr 100px;
+    grid-template-columns: 80px 2fr 1fr 1fr 1fr 1.2fr 80px;
     align-items: center;
     padding: 15px 25px;
     border-bottom: 1px solid var(--border-color);
     transition: all 0.2s ease;
     font-size: 15px;
     color: var(--text-main);
+}
+
+.item-dietary-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.item-dietary-badge.veg {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.item-dietary-badge.non-veg {
+    background: #ffebee;
+    color: #c62828;
 }
 
 .list-table-row:hover {
