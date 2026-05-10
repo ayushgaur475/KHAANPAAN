@@ -1,6 +1,7 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js"
 import Stripe from "stripe"
+import { sendNotification } from "../config/firebaseAdmin.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
@@ -123,10 +124,19 @@ const verifyOrder = async (req,res) => {
             }
 
             // CLEAR CART AND MARK FIRST ORDER USED ONLY ON SUCCESS
-            await userModel.findByIdAndUpdate(order.userId, { 
+            const user = await userModel.findByIdAndUpdate(order.userId, { 
                 cartData: {}, 
                 isFirstOrder: false 
             });
+
+            // Send Push Notification
+            if (user && user.fcmToken) {
+                sendNotification(
+                    user.fcmToken, 
+                    "Order Confirmed! 🎉", 
+                    `Your payment was successful. We've started preparing your delicious meal!`
+                );
+            }
 
             res.json({success:true,message:"Paid"})
         }
@@ -183,7 +193,25 @@ const listOrders = async (req,res) => {
 // api for updating order status
 const updateStatus = async (req,res) => {
     try {
-        await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status});
+        const order = await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status});
+        
+        // Send Push Notification for Status Change
+        const user = await userModel.findById(order.userId);
+        if (user && user.fcmToken) {
+            let title = "Order Update! 🍱";
+            let body = `Your order status has been updated to: ${req.body.status}`;
+            
+            if (req.body.status === "Out for delivery") {
+                title = "Order Out for Delivery! 🚚";
+                body = "Hang tight! Your food is on its way to your doorstep.";
+            } else if (req.body.status === "Delivered") {
+                title = "Order Delivered! 😋";
+                body = "Enjoy your meal! Don't forget to rate your experience.";
+            }
+
+            sendNotification(user.fcmToken, title, body);
+        }
+
         res.json({success:true,message:"Status Updated"})
     } catch (error) {
         console.log(error);

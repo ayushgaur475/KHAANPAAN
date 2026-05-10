@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getMessaging, getToken } from "firebase/messaging";
 
 // Replace these placeholders with your actual Firebase config!
 const firebaseConfig = {
@@ -15,5 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+const messaging = getMessaging(app);
 
-export { auth, googleProvider, signInWithPopup };
+export { auth, googleProvider, signInWithPopup, messaging, getToken };

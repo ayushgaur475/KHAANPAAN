@@ -2,9 +2,10 @@ import { createContext, useEffect, useState } from "react";
 export const StoreContext = createContext(null);
 import axios from "axios";
 import { food_list as local_food_list } from "../assets/assets";
+import { messaging, getToken } from "../config/firebase";
 
 const StoreContextProvider = (props) => {
-  console.log("🚀 DEBUG: STORE CONTEXT LOADED - VERSION 2.0");
+  console.log("🚀 DEBUG: STORE CONTEXT LOADED - VERSION 2.1 - NOTIFICATIONS READY");
   const [cartItems, setCartItems] = useState({});
   const url = (import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "") : 'http://localhost:4000');
   const [token, setToken] = useState("");
@@ -13,6 +14,24 @@ const StoreContextProvider = (props) => {
   const [showSearch, setShowSearch] = useState(false);
   const [userData, setUserData] = useState({ name: "", coins: 0, email: "", phone: "", photo: "", bio: "", isFirstOrder: true, addresses: [] });
   const [appliedPromo, setAppliedPromo] = useState(null);
+
+  const requestNotificationPermission = async (userToken) => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        const fcmToken = await getToken(messaging, { 
+          vapidKey: "BEn6_v9P8R5T8J9X-KhaanPaan_Dummy_Key" // Replace with your actual VAPID key
+        });
+        
+        if (fcmToken) {
+          console.log("FCM Token:", fcmToken);
+          await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token: userToken } });
+        }
+      }
+    } catch (error) {
+      console.error("Error requesting notification permission:", error);
+    }
+  };
 
   const fetchUserData = async (token) => {
     const response = await axios.post(url + "/api/user/info", {}, { headers: { token } });
@@ -27,6 +46,8 @@ const StoreContextProvider = (props) => {
         isFirstOrder: response.data.isFirstOrder,
         addresses: response.data.addresses || []
       });
+      // Request notification permission after user data is loaded
+      requestNotificationPermission(token);
     }
   }
 
@@ -77,9 +98,10 @@ const StoreContextProvider = (props) => {
     async function loadData() {
       await fetchFoodList();
       if(localStorage.getItem("token")){
-        setToken(localStorage.getItem("token"));
-        await loadCartData(localStorage.getItem("token"));
-        await fetchUserData(localStorage.getItem("token"));
+        const savedToken = localStorage.getItem("token");
+        setToken(savedToken);
+        await loadCartData(savedToken);
+        await fetchUserData(savedToken);
       }
     }
     loadData();
@@ -103,7 +125,8 @@ const StoreContextProvider = (props) => {
     setUserData,
     fetchUserData,
     appliedPromo,
-    setAppliedPromo
+    setAppliedPromo,
+    requestNotificationPermission
   };
 
   return (

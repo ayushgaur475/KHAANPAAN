@@ -52,6 +52,10 @@ const userSchema = new mongoose.Schema(
     addresses: {
       type: Array,
       default: []
+    },
+    fcmToken: {
+      type: String,
+      default: ""
     }
   },
   { minimize: false, timestamps: true }

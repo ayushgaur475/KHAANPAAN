@@ -297,4 +297,15 @@ const deleteAddress = async (req, res) => {
     }
 }
 
-export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers, addAddress, deleteAddress };
+const updateFcmToken = async (req, res) => {
+    try {
+        const { userId, fcmToken } = req.body;
+        await userModel.findByIdAndUpdate(userId, { fcmToken });
+        res.json({ success: true, message: "FCM Token updated" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error updating FCM Token" });
+    }
+}
+
+export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers, addAddress, deleteAddress, updateFcmToken };
