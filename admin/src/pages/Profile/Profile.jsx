@@ -56,7 +56,7 @@ const Profile = ({ url, token, setAdminPhoto }) => {
   const photoSrc = image
     ? URL.createObjectURL(image)
     : currentPhoto
-    ? (currentPhoto.startsWith('http') ? currentPhoto : `${url}/images/${currentPhoto}`)
+    ? (currentPhoto.startsWith('http') || currentPhoto.startsWith('data:') ? currentPhoto : `${url}/images/${currentPhoto}`)
     : assets.profile_image;
 
   return (

@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import validator from "validator";
 import nodemailer from "nodemailer";
 import { Resend } from "resend";
+import fs from 'fs';
 
 // login user
 const loginUser = async (req, res) => {
@@ -173,7 +174,14 @@ const updateUserInfo = async (req, res) => {
     let updateData = { name, email, phone, bio };
 
     if (req.file) {
-      updateData.photo = req.file.filename;
+      // Convert image to Base64 for persistent storage (survives server resets)
+      const imagePath = req.file.path;
+      const fileData = fs.readFileSync(imagePath);
+      const base64Image = `data:${req.file.mimetype};base64,${fileData.toString('base64')}`;
+      updateData.photo = base64Image;
+      
+      // Delete temporary file
+      fs.unlinkSync(imagePath);
     }
 
     const updatedUser = await userModel.findByIdAndUpdate(userId, updateData, { new: true });
