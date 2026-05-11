@@ -1,9 +1,9 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { connectDB, getGridFSBucket } from './config/db.js';
 import foodRouter from './routes/foodRoutes.js';
 import userRouter from './routes/userRoute.js';
-import 'dotenv/config';
 import cartRouter from './routes/cartRoutes.js';
 import orderRouter from './routes/orderRoute.js';
 
