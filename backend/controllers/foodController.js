@@ -4,29 +4,39 @@ import fs from 'fs'
 //add food item
 
 const addFood = async(req, res) => {
-    
-    let image_filename = `${req.file.filename}`;
-    const food = new foodModel({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        category: req.body.category,
-        image: image_filename,
-        veg: req.body.veg === "true" || req.body.veg === true,
-        inStock: true
-    }) 
-    try{
+    try {
+        // Read the image file and convert to Base64
+        const filePath = `uploads/${req.file.filename}`;
+        const imageBuffer = fs.readFileSync(filePath);
+        const base64Image = `data:${req.file.mimetype};base64,${imageBuffer.toString('base64')}`;
+
+        const food = new foodModel({
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            category: req.body.category,
+            image: base64Image, // Store Base64 string instead of filename
+            veg: req.body.veg === "true" || req.body.veg === true,
+            inStock: true
+        }) 
+
         await food.save();
+
+        // Delete the temporary file from 'uploads' folder
+        fs.unlink(filePath, (err) => {
+            if (err) console.log("Error deleting temp file:", err);
+        });
+
         res.json({
             success: true, 
-            message: "Food Added",
+            message: "Food Added Successfully (Stored Permanently)",
         })
     }
     catch(error){
-        console.log("error");
+        console.log(error);
         res.json({
             success: false,
-            message: "Error",
+            message: "Error adding food item",
         })
     }
 }

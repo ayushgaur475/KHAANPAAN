@@ -138,6 +138,18 @@ const verifyOrder = async (req,res) => {
                 );
             }
 
+            // Notify Admins about new order
+            const admins = await userModel.find({ isAdmin: true });
+            admins.forEach(admin => {
+                if (admin.fcmToken) {
+                    sendNotification(
+                        admin.fcmToken,
+                        "New Order Received! 🛍️",
+                        `A new order of ₹${order.amount} has been placed. Check dashboard for details.`
+                    );
+                }
+            });
+
             res.json({success:true,message:"Paid"})
         }
         else{

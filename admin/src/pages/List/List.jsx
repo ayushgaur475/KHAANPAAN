@@ -66,7 +66,11 @@ function List({url, token}) {
                 <div key={index} className='list-table-row'>
                   <div className="item-img-container">
                     <img
-                      src={typeof item.image === 'string' && item.image.startsWith('http') ? item.image : `${url}/images/` + item.image}
+                      src={
+                        typeof item.image === 'string' && (item.image.startsWith('http') || item.image.startsWith('/src/assets') || item.image.startsWith('data:')) 
+                        ? item.image 
+                        : url + "/images/" + item.image
+                      }
                       alt={item.name}
                       className="food-img"
                       onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER; }}

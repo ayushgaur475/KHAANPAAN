@@ -12,6 +12,8 @@ import Login from './pages/Login/Login'
 import Profile from './pages/Profile/Profile'
 import Customers from './pages/Customers/Customers'
 import { useState, useEffect } from 'react'
+import { messaging, getToken } from './config/firebase'
+import axios from 'axios'
 
 function App() {
   const url = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
@@ -20,9 +22,28 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [adminPhoto, setAdminPhoto] = useState('');
 
+  const requestAdminNotificationPermission = async (adminToken) => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        const fcmToken = await getToken(messaging, { 
+          vapidKey: "BEn6_v9P8R5T8J9X-KhaanPaan_Dummy_Key" 
+        });
+        
+        if (fcmToken) {
+          console.log("Admin FCM Token:", fcmToken);
+          await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token: adminToken } });
+        }
+      }
+    } catch (error) {
+      console.error("Error requesting admin notification permission:", error);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
+      requestAdminNotificationPermission(token);
     } else {
       localStorage.removeItem("token");
     }
