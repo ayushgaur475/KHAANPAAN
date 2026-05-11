@@ -56,7 +56,7 @@ const Customers = ({ url }) => {
             <div key={index} className="list-row">
               <div className="user-profile">
                 <img 
-                  src={user.photo ? (user.photo.startsWith('http') ? user.photo : `${url}/images/${user.photo}`) : "https://img.icons8.com/ios-filled/50/ff4c24/user-male-circle.png"} 
+                  src={user.photo ? (user.photo.startsWith('http') || user.photo.startsWith('data:') ? user.photo : `${url}/images/${user.photo}`) : "https://img.icons8.com/ios-filled/50/ff4c24/user-male-circle.png"} 
                   alt="" 
                   onError={(e) => { e.target.src = "https://img.icons8.com/ios-filled/50/ff4c24/user-male-circle.png" }}
                 />
