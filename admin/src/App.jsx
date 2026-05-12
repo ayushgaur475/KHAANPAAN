@@ -17,7 +17,7 @@ import axios from 'axios'
 
 function App() {
   const url = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-    ? "http://127.0.0.1:5001" 
+    ? "http://127.0.0.1:5001"
     : "https://khaanpaan-backend.onrender.com";
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [adminPhoto, setAdminPhoto] = useState('');
@@ -26,10 +26,10 @@ function App() {
     try {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
-        const fcmToken = await getToken(messaging, { 
-          vapidKey: "BEn6_v9P8R5T8J9X-KhaanPaan_Dummy_Key" 
+        const fcmToken = await getToken(messaging, {
+          vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko"
         });
-        
+
         if (fcmToken) {
           console.log("Admin FCM Token:", fcmToken);
           await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token: adminToken } });
