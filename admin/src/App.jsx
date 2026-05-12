@@ -12,8 +12,10 @@ import Login from './pages/Login/Login'
 import Profile from './pages/Profile/Profile'
 import Customers from './pages/Customers/Customers'
 import { useState, useEffect } from 'react'
-import { messaging, getToken } from './config/firebase'
+import { messaging, getToken, onMessage } from './config/firebase'
 import axios from 'axios'
+
+const notificationSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2861/2861-preview.mp3');
 
 function App() {
   const url = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
@@ -44,6 +46,15 @@ function App() {
     if (token) {
       localStorage.setItem("token", token);
       requestAdminNotificationPermission(token);
+
+      // Listen for foreground messages and play sound
+      const unsubscribe = onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+        notificationSound.play().catch(e => console.log("Sound play error:", e));
+        // You can also show a toast here if you want
+      });
+
+      return () => unsubscribe();
     } else {
       localStorage.removeItem("token");
     }
