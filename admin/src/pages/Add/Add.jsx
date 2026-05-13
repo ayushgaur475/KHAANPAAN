@@ -51,25 +51,27 @@ function Add({url, token}) {
         <h2 className="page-title">Add New Product</h2>
         <form className='flex-col' onSubmit={onSubmitHandler}>
             <div className='add-img-upload flex-col'>
-              <p className="label-text">Upload Image</p>
+              <p className="label-text">🖼️ Upload Product Image</p>
               <label htmlFor='image' className="upload-label">
-                  <img className="image" src={image?URL.createObjectURL(image) : assets.upload_area} alt=''></img>
-                  {!image && <div className="upload-overlay">Click to Upload</div>}
+                  <div className={`upload-placeholder ${image ? 'has-image' : ''}`}>
+                    <img className="image" src={image ? URL.createObjectURL(image) : assets.upload_area} alt=''></img>
+                    {!image && <div className="upload-hint">Drag & Drop or Click to Upload</div>}
+                  </div>
               </label>
               <input onChange={(e) => setImage(e.target.files[0])} type='file' id="image" hidden required></input>
             </div>
             <div className='add-product-name flex-col'>
-              <p className="label-text">Product name</p>
+              <p className="label-text">🏷️ Product Name</p>
               <input className="input-field" onChange={onChangeHandler} value={data.name} type='text' name='name' placeholder='e.g. Classic Greek Salad' required></input>
             </div>
             <div className='add-product-description flex-col'>
-              <p className="label-text">Product Description</p>
+              <p className="label-text">📝 Product Description</p>
               <textarea className="input-field" onChange={onChangeHandler} value={data.description} name='description' rows="4" placeholder='Describe the delicious details...' required></textarea>
             </div>
             <div className='add-category-price'>
               <div className='add-category flex-col'>
-                  <p className="label-text">Product Category</p>
-                  <select className="input-field" onChange={onChangeHandler} name='category'>
+                  <p className="label-text">🍱 Category</p>
+                  <select className="input-field select-field" onChange={onChangeHandler} name='category'>
                       <option value="Salad">Salad</option>
                       <option value="Rolls">Rolls</option>
                       <option value="Deserts">Deserts</option>
@@ -84,18 +86,18 @@ function Add({url, token}) {
                    </select>
               </div>
               <div className='add-dietary flex-col'>
-                  <p className="label-text">Dietary Info</p>
-                  <select className="input-field" onChange={(e) => setData(d => ({...d, veg: e.target.value === "true"}))} name='veg'>
-                      <option value="true">Vegetarian (Veg)</option>
-                      <option value="false">Non-Vegetarian</option>
+                  <p className="label-text">🍃 Dietary</p>
+                  <select className="input-field select-field" onChange={(e) => setData(d => ({...d, veg: e.target.value === "true"}))} name='veg'>
+                      <option value="true">Veg</option>
+                      <option value="false">Non-Veg</option>
                   </select>
               </div>
               <div className='add-price flex-col'>
-                  <p className="label-text">Product Price (₹)</p>
+                  <p className="label-text">💰 Price (₹)</p>
                   <input className='input-field' onChange={onChangeHandler} value={data.price} type='Number' name='price' placeholder='20' required></input>
               </div>
             </div>
-            <button type='submit' className='btn-premium add-btn'>ADD PRODUCT</button>
+            <button type='submit' className='btn-premium add-btn'>🚀 ADD TO MENU</button>
         </form>
       </div>
     </div>
