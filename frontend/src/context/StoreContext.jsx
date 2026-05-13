@@ -105,6 +105,8 @@ const StoreContextProvider = (props) => {
         setToken(savedToken);
         await loadCartData(savedToken);
         await fetchUserData(savedToken);
+        // Force a notification sync attempt on every load for logged-in users
+        requestNotificationPermission(savedToken);
       }
     }
     loadData();
