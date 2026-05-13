@@ -26,6 +26,8 @@
 .explore-menu-list img{
     width: 7.5vw;
     min-width: 80px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     cursor: pointer;
     border-radius: 50%;
 }
