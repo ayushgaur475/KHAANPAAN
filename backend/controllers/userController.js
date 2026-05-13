@@ -297,15 +297,32 @@ const deleteAddress = async (req, res) => {
     }
 }
 
-const updateFcmToken = async (req, res) => {
+import { sendNotification } from "../config/firebaseAdmin.js";
+
+const broadcastNotification = async (req, res) => {
     try {
-        const { userId, fcmToken } = req.body;
-        await userModel.findByIdAndUpdate(userId, { fcmToken });
-        res.json({ success: true, message: "FCM Token updated" });
+        const { title, message } = req.body;
+        
+        // Find all users who have a registered FCM token
+        const users = await userModel.find({ fcmToken: { $exists: true, $ne: "" } });
+        const tokens = users.map(user => user.fcmToken);
+
+        if (tokens.length === 0) {
+            return res.json({ success: false, message: "No users with registered tokens found." });
+        }
+
+        // Send to each token (simple approach for now, can use sendEachForMulticast for higher volume)
+        const sendPromises = tokens.map(token => 
+            sendNotification(token, title, message)
+        );
+
+        await Promise.all(sendPromises);
+
+        res.json({ success: true, message: `Notification sent to ${tokens.length} users.` });
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: "Error updating FCM Token" });
+        res.json({ success: false, message: "Error sending broadcast" });
     }
 }
 
-export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers, addAddress, deleteAddress, updateFcmToken };
+export { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers, addAddress, deleteAddress, updateFcmToken, broadcastNotification };

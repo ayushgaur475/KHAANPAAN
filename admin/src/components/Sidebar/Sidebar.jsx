@@ -51,6 +51,14 @@ function Sidebar() {
           </svg>
           <p>Customers</p>
         </NavLink>
+        <NavLink to='/marketing' className='sidebar-option'>
+          <svg className="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M11 15h2a2 2 0 1 0 0-4h-2v4z"></path>
+            <path d="M15 11a3 3 0 0 0-3-3H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h7a3 3 0 0 0 3-3V11z"></path>
+            <path d="M18 10l4-2v8l-4-2"></path>
+          </svg>
+          <p>Marketing</p>
+        </NavLink>
       </div>
       
     </div>

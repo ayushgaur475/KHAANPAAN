@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers, addAddress, deleteAddress, updateFcmToken } from '../controllers/userController.js'
+import { loginUser, registerUser, getUserInfo, phoneLogin, sendOtp, verifyOtp, updateUserInfo, googleLogin, listUsers, addAddress, deleteAddress, updateFcmToken, broadcastNotification } from '../controllers/userController.js'
 import authMiddleware from '../middleware/auth.js';
 import multer from 'multer';
 import dotenv from 'dotenv';
@@ -29,5 +29,6 @@ userRouter.post("/add-address", authMiddleware, addAddress)
 userRouter.post("/delete-address", authMiddleware, deleteAddress)
 userRouter.post("/update-fcm-token", authMiddleware, updateFcmToken)
 userRouter.get("/list-users", listUsers)
+userRouter.post("/broadcast", broadcastNotification)
 
 export default userRouter
