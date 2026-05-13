@@ -16,18 +16,6 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  
-  // Use data fields for the notification to avoid double messages
-  const notificationTitle = payload.data.title || "KhaanPaan";
-  const notificationOptions = {
-    body: payload.data.body || "",
-    icon: payload.data.icon || '/logo192.png',
-    image: payload.data.image || '/header_img.png',
-    badge: payload.data.badge || '/favicon.png',
-    tag: 'khaanpaan-notification',
-    renotify: true,
-    data: payload.data
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  // Browser will automatically show the notification from the 'notification' payload.
+  // We don't need to call showNotification manually here to avoid duplicates.
 });

@@ -22,11 +22,29 @@ export const sendNotification = async (fcmToken, title, body) => {
   if (!fcmToken) return;
 
   const message = {
+    notification: {
+      title: title || "KhaanPaan",
+      body: body,
+      imageUrl: 'https://khaanpaan-frontend.vercel.app/header_img.png'
+    },
+    webpush: {
+      headers: {
+        Urgency: 'high'
+      },
+      notification: {
+        title: title || "KhaanPaan",
+        body: body,
+        icon: 'https://khaanpaan-frontend.vercel.app/logo192.png',
+        badge: 'https://khaanpaan-frontend.vercel.app/favicon.png',
+        image: 'https://khaanpaan-frontend.vercel.app/header_img.png',
+        tag: 'khaanpaan-broadcast',
+        renotify: true
+      }
+    },
     data: {
       title: title || "KhaanPaan",
       body: body,
       icon: 'https://khaanpaan-frontend.vercel.app/logo192.png',
-      badge: 'https://khaanpaan-frontend.vercel.app/favicon.png',
       image: 'https://khaanpaan-frontend.vercel.app/header_img.png'
     },
     token: fcmToken,
