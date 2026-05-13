@@ -19,12 +19,14 @@ const StoreContextProvider = (props) => {
     try {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        await navigator.serviceWorker.ready;
         const fcmToken = await getToken(messaging, { 
-          vapidKey: "BEn6_v9P8R5T8J9X-KhaanPaan_Dummy_Key" // Replace with your actual VAPID key
+          vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko"
         });
         
-        if (fcmToken) {
-          console.log("FCM Token:", fcmToken);
+        if (fcmToken && userToken) {
+          console.log("✅ FCM Token Synced:", fcmToken);
           await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token: userToken } });
         }
       }

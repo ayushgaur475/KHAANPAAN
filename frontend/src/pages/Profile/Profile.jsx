@@ -4,10 +4,9 @@ import { StoreContext } from '../../context/StoreContext';
 import { assets } from '../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { messaging, getToken } from '../../config/firebase';
 
 const Profile = () => {
-  const { url, token, userData, setUserData } = useContext(StoreContext);
+  const { url, token, userData, setUserData, requestNotificationPermission } = useContext(StoreContext);
   
   const [data, setData] = useState({
     name: "",
@@ -20,26 +19,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
 
   const enableNotifications = async () => {
-    try {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-        await navigator.serviceWorker.ready;
-        const fcmToken = await getToken(messaging, { 
-          vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko",
-          serviceWorkerRegistration: registration
-        });
-        if (fcmToken && token) {
-          await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token } });
-          toast.success("Notifications Enabled Successfully! 🔔");
-        }
-      } else {
-        toast.error("Permission denied. Please enable notifications in your browser settings.");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error enabling notifications.");
-    }
+    await requestNotificationPermission(token);
+    toast.info("Notification request sent. Please check for the prompt! 🔔");
   };
 
   // Fetch directly from backend to always get latest data
