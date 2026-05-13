@@ -14,6 +14,8 @@ import menu_9 from './menu_9.png'
 import menu_10 from './menu_10.png'
 import menu_11 from './menu_11.png'
 import menu_12 from './menu_12.png'
+import menu_13 from './menu_13.png'
+import menu_14 from './menu_14.png'
 
 import food_1 from './food_1.png'
 import food_2 from './food_2.png'
@@ -110,6 +112,14 @@ export const menu_list = [
     {
         menu_name: "Biryani",
         menu_image: menu_12
+    },
+    {
+        menu_name: "Pizza",
+        menu_image: menu_13
+    },
+    {
+        menu_name: "Burger",
+        menu_image: menu_14
     },
     {
         menu_name: "Salad",

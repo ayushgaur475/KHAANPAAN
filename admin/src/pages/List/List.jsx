@@ -212,6 +212,8 @@ function List({url, token}) {
                     <option value="Noodles">Noodles</option>
                     <option value="Indian">Indian</option>
                     <option value="Biryani">Biryani</option>
+                    <option value="Pizza">Pizza</option>
+                    <option value="Burger">Burger</option>
                     <option value="Beverages">Beverages</option>
                     <option value="Bread">Bread</option>
                   </select>
