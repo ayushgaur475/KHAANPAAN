@@ -21,7 +21,7 @@ messaging.onBackgroundMessage((payload) => {
     body: payload.notification.body,
     icon: '/logo192.png',
     image: payload.notification.image || '/header_img.png',
-    badge: '/logo192.png',
+    badge: '/favicon.png', // Try favicon for a smaller, simpler badge
     tag: 'khaanpaan-notification',
     renotify: true,
     data: payload.data

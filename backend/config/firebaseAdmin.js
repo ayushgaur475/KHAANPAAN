@@ -31,7 +31,7 @@ export const sendNotification = async (fcmToken, title, body) => {
       notification: {
         title: title || "KhaanPaan",
         icon: 'https://khaanpaan-frontend.vercel.app/logo192.png',
-        badge: 'https://khaanpaan-frontend.vercel.app/logo192.png',
+        badge: 'https://khaanpaan-frontend.vercel.app/favicon.png',
         image: 'https://khaanpaan-frontend.vercel.app/header_img.png',
         tag: 'khaanpaan-order',
         renotify: true,
