@@ -25,15 +25,15 @@ export const sendNotification = async (fcmToken, title, body) => {
     notification: {
       title,
       body,
+      imageUrl: 'https://khaanpaan-frontend.vercel.app/header_img.png'
     },
     webpush: {
       notification: {
         icon: 'https://khaanpaan-frontend.vercel.app/logo192.png',
         badge: 'https://khaanpaan-frontend.vercel.app/logo192.png',
         image: 'https://khaanpaan-frontend.vercel.app/header_img.png',
-        tag: 'marketing-broadcast',
-        renotify: true,
-        vibrate: [200, 100, 200]
+        tag: 'khaanpaan-broadcast',
+        renotify: true
       }
     },
     data: {
