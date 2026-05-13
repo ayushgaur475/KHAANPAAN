@@ -23,16 +23,17 @@ export const sendNotification = async (fcmToken, title, body) => {
 
   const message = {
     notification: {
-      title,
+      title: title || "KhaanPaan",
       body,
       imageUrl: 'https://khaanpaan-frontend.vercel.app/header_img.png'
     },
     webpush: {
       notification: {
+        title: title || "KhaanPaan",
         icon: 'https://khaanpaan-frontend.vercel.app/logo192.png',
         badge: 'https://khaanpaan-frontend.vercel.app/logo192.png',
         image: 'https://khaanpaan-frontend.vercel.app/header_img.png',
-        tag: 'khaanpaan-broadcast',
+        tag: 'khaanpaan-order',
         renotify: true
       }
     },
