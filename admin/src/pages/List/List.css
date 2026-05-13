@@ -1,207 +1,204 @@
 .list-page {
     flex: 1;
     padding: 40px;
+    background: var(--bg-color);
+    min-height: 100vh;
 }
 
 .list-container {
-    padding: 25px;
+    padding: 35px;
+    border-radius: 28px;
 }
 
 .list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 20px;
+    margin-bottom: 35px;
 }
 
 .page-title {
-    font-size: 22px;
+    font-size: 28px;
     font-weight: 800;
     color: var(--text-main);
-    letter-spacing: -0.5px;
+    letter-spacing: -0.8px;
     margin: 0;
 }
 
 .item-count {
-    font-size: 14px;
-    color: var(--text-muted);
-    background: var(--bg-color);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 600;
+    font-size: 13px;
+    color: #ff4c24;
+    background: rgba(255, 76, 36, 0.1);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: 800;
+    text-transform: uppercase;
 }
 
 .list-table {
     display: flex;
     flex-direction: column;
     background: var(--surface-color);
-    border-radius: 12px;
-    box-shadow: var(--shadow-md);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
     overflow: hidden;
     border: 1px solid var(--border-color);
 }
 
 .list-table-header {
     display: grid;
-    grid-template-columns: 80px 2fr 1fr 1fr 1fr 1.2fr 80px;
+    grid-template-columns: 100px 2.5fr 1.5fr 1.2fr 1fr 1.2fr 100px;
     align-items: center;
-    padding: 18px 25px;
-    background: var(--surface-color);
-    font-size: 13px;
+    padding: 22px 30px;
+    background: rgba(0,0,0,0.02);
+    font-size: 11px;
     color: var(--text-muted);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--border-color);
+    letter-spacing: 1.5px;
+    border-bottom: 2px solid var(--border-color);
 }
 
 .list-table-row {
     display: grid;
-    grid-template-columns: 80px 2fr 1fr 1fr 1fr 1.2fr 80px;
+    grid-template-columns: 100px 2.5fr 1.5fr 1.2fr 1fr 1.2fr 100px;
     align-items: center;
-    padding: 15px 25px;
+    padding: 20px 30px;
     border-bottom: 1px solid var(--border-color);
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 15px;
-    color: var(--text-main);
 }
 
-.item-dietary-badge {
-    padding: 4px 10px;
-    border-radius: 6px;
+.list-table-row:hover {
+    background: rgba(255, 76, 36, 0.02);
+    transform: translateX(5px);
+}
+
+.item-img-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: #f9f9f9;
+}
+
+.food-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-name {
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 16px;
+}
+
+/* Dynamic Category Badges */
+.category-badge {
+    padding: 6px 14px;
+    border-radius: 50px;
     font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.category-badge.salad { background: #e8f5e9; color: #2e7d32; }
+.category-badge.rolls { background: #fff3e0; color: #e65100; }
+.category-badge.deserts { background: #f3e5f5; color: #7b1fa2; }
+.category-badge.sandwich { background: #e3f2fd; color: #1565c0; }
+.category-badge.cake { background: #fce4ec; color: #c2185b; }
+.category-badge.pure-veg { background: #f1f8e9; color: #33691e; }
+.category-badge.pasta { background: #fffde7; color: #fbc02d; }
+.category-badge.noodles { background: #efebe9; color: #5d4037; }
+.category-badge.indian { background: #fff8e1; color: #ff8f00; }
+.category-badge.beverages { background: #e0f2f1; color: #00695c; }
+.category-badge.bread { background: #fafafa; color: #616161; }
+
+.item-dietary-badge {
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 11px;
     font-weight: 700;
     width: fit-content;
 }
 
 .item-dietary-badge.veg {
-    background: #e8f5e9;
-    color: #2e7d32;
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+    border: 1px solid rgba(76, 175, 80, 0.2);
 }
 
 .item-dietary-badge.non-veg {
-    background: #ffebee;
-    color: #c62828;
-}
-
-.list-table-row:hover {
-    background: #fff9f8;
-    transform: scale(1.005);
-}
-
-.item-img-container {
-    width: 45px;
-    height: 45px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
-    background: var(--bg-color);
-}
-
-.item-img-container img,
-.item-img-container .food-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-.item-name {
-    font-weight: 600;
-    color: var(--text-main);
-    font-size: 15px;
-}
-
-.item-category-badge {
-    background: #f0f7ff;
-    color: #0061d5;
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    width: fit-content;
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+    border: 1px solid rgba(244, 67, 54, 0.2);
 }
 
 .item-price {
-    font-weight: 700;
+    font-weight: 800;
     color: #ff4c24;
-    font-size: 16px;
+    font-size: 18px;
+}
+
+.stock-btn {
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+}
+
+.stock-btn.in-stock {
+    background: #e7f9ee;
+    color: #0d9668;
+}
+
+.stock-btn.out-of-stock {
+    background: #f4f4f4;
+    color: #666;
 }
 
 .remove-btn {
-    background: #fff1f1;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #fff5f5;
     color: #ff4c24;
-    border: 1px solid #ffe4e4;
-    padding: 8px;
-    border-radius: 8px;
+    border: 1px solid rgba(255, 76, 36, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s;
 }
 
 .remove-btn:hover {
     background: #ff4c24;
     color: white;
-    transform: rotate(10deg);
-}
-
-.stock-btn {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-}
-
-.stock-btn.in-stock {
-    background: #dcfce7;
-    color: #166534;
-    border-color: #bbf7d0;
-}
-
-.stock-btn.out-of-stock {
-    background: #f3f4f6;
-    color: #4b5563;
-    border-color: #e5e7eb;
-}
-
-.stock-btn:hover {
-    transform: scale(1.05);
+    transform: rotate(8deg);
+    box-shadow: 0 4px 12px rgba(255, 76, 36, 0.2);
 }
 
 .empty-state {
-    padding: 50px;
+    padding: 100px;
     text-align: center;
+    font-size: 18px;
+    font-weight: 600;
     color: var(--text-muted);
-    font-style: italic;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .list-table-header {
         display: none;
     }
-    
     .list-table-row {
-        grid-template-columns: 60px 2fr 1fr 1fr;
+        grid-template-columns: 80px 1.5fr 1fr 1fr;
         gap: 15px;
-        padding: 15px;
     }
-    
-    .item-category-badge, .item-price {
-        font-size: 12px;
-    }
-}
+}

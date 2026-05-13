@@ -77,7 +77,11 @@ function List({url, token}) {
                     />
                   </div>
                   <p className="item-name">{item.name}</p>
-                  <p className="item-category-badge">{item.category}</p>
+                  <div className="item-category-cell">
+                    <span className={`category-badge ${item.category.toLowerCase().replace(/\s+/g, '-')}`}>
+                      {item.category}
+                    </span>
+                  </div>
                   <p className={`item-dietary-badge ${item.veg ? 'veg' : 'non-veg'}`}>
                     {item.veg ? "🟢 Veg" : "🔴 Non-Veg"}
                   </p>
