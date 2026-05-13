@@ -81,6 +81,7 @@ function Add({url, token}) {
                       <option value="Pasta">Pasta</option>
                       <option value="Noodles">Noodles</option>
                       <option value="Indian">Indian</option>
+                      <option value="Biryani">Biryani</option>
                       <option value="Beverages">Beverages</option>
                       <option value="Bread">Bread</option>
                    </select>

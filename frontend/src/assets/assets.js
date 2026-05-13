@@ -106,6 +106,10 @@ export const menu_list = [
         menu_image: menu_9
     },
     {
+        menu_name: "Biryani",
+        menu_image: "https://img.icons8.com/color/96/biryani.png"
+    },
+    {
         menu_name: "Salad",
         menu_image: menu_1
     },
