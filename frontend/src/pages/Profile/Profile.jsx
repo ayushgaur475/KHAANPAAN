@@ -4,6 +4,7 @@ import { StoreContext } from '../../context/StoreContext';
 import { assets } from '../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { messaging, getToken } from '../../config/firebase';
 
 const Profile = () => {
   const { url, token, userData, setUserData } = useContext(StoreContext);
@@ -17,6 +18,29 @@ const Profile = () => {
   
   const [image, setImage] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const enableNotifications = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        await navigator.serviceWorker.ready;
+        const fcmToken = await getToken(messaging, { 
+          vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko",
+          serviceWorkerRegistration: registration
+        });
+        if (fcmToken && token) {
+          await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token } });
+          toast.success("Notifications Enabled Successfully! 🔔");
+        }
+      } else {
+        toast.error("Permission denied. Please enable notifications in your browser settings.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error enabling notifications.");
+    }
+  };
 
   // Fetch directly from backend to always get latest data
   useEffect(() => {
@@ -162,6 +186,19 @@ const Profile = () => {
         <button type="submit" disabled={loading} className="save-btn">
           {loading ? "Saving..." : "Save Changes"}
         </button>
+
+        <div className="notification-settings" style={{marginTop: '30px', padding: '20px', border: '1px dashed #ff4c24', borderRadius: '15px', textAlign: 'center'}}>
+           <h3>Stay Updated! 🔔</h3>
+           <p style={{fontSize: '13px', color: '#666', marginBottom: '15px'}}>Get real-time alerts about your orders and special offers.</p>
+           <button 
+             type="button" 
+             onClick={enableNotifications} 
+             className="enable-btn"
+             style={{background: '#ff4c24', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '25px', cursor: 'pointer', fontWeight: '600'}}
+           >
+             Enable Phone Notifications
+           </button>
+        </div>
       </form>
     </div>
   );

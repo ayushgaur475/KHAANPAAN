@@ -32,8 +32,9 @@ function App() {
       console.log("Permission status:", permission);
       if (permission === 'granted') {
         console.log("Registering Service Worker...");
-        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-        console.log("Service Worker registered successfully.");
+        await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        const registration = await navigator.serviceWorker.ready;
+        console.log("Service Worker is READY and ACTIVE.");
 
         console.log("Attempting to get FCM Token...");
         const fcmToken = await getToken(messaging, {
