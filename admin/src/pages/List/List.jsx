@@ -7,6 +7,10 @@ const PLACEHOLDER = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/s
 
 function List({url, token}) {
   const [list, setList] = useState([]);
+  const [showEdit, setShowEdit] = useState(false);
+  const [editData, setEditData] = useState(null);
+  const [newImage, setNewImage] = useState(false);
+
   const fetchList = async() => {
     const response = await axios.get(`${url}/api/food/list`);
     console.log(response.data);
@@ -35,6 +39,53 @@ function List({url, token}) {
       toast.success(response.data.message)
     } else {
       toast.error("Error updating stock status")
+    }
+  }
+
+  const handleEdit = (item) => {
+    setEditData({
+      id: item._id,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      category: item.category,
+      veg: item.veg,
+      image: item.image
+    });
+    setNewImage(false);
+    setShowEdit(true);
+  }
+
+  const onEditChangeHandler = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setEditData(prev => ({ ...prev, [name]: value }));
+  }
+
+  const onUpdateHandler = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("id", editData.id);
+    formData.append("name", editData.name);
+    formData.append("description", editData.description);
+    formData.append("price", Number(editData.price));
+    formData.append("category", editData.category);
+    formData.append("veg", editData.veg);
+    if (newImage) {
+      formData.append("image", newImage);
+    }
+
+    try {
+      const response = await axios.post(`${url}/api/food/update`, formData, { headers: { token } });
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setShowEdit(false);
+        fetchList();
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Error updating product");
     }
   }
 
@@ -95,6 +146,12 @@ function List({url, token}) {
                     </button>
                   </div>
                   <div className="item-action">
+                    <button onClick={() => handleEdit(item)} className='edit-btn' title="Edit Product">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                      </svg>
+                    </button>
                     <button onClick={() => removeFood(item._id)} className='remove-btn' title="Delete Product">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M3 6h18"></path>
@@ -114,7 +171,70 @@ function List({url, token}) {
       </div>
     </div>
 
+      {/* Edit Product Modal */}
+      {showEdit && (
+        <div className="edit-modal-overlay">
+          <div className="edit-modal glass-card">
+            <div className="modal-header">
+              <h3>Edit Product</h3>
+              <button onClick={() => setShowEdit(false)} className="close-btn">&times;</button>
+            </div>
+            <form onSubmit={onUpdateHandler} className="edit-form">
+              <div className="edit-img-section">
+                <label htmlFor="new-image">
+                  <img src={newImage ? URL.createObjectURL(newImage) : (editData.image.startsWith('http') ? editData.image : url + "/images/" + editData.image)} alt="Preview" />
+                  <div className="img-edit-hint">Change Image</div>
+                </label>
+                <input type="file" id="new-image" hidden onChange={(e) => setNewImage(e.target.files[0])} />
+              </div>
+              
+              <div className="edit-input-group">
+                <label>Product Name</label>
+                <input type="text" name="name" value={editData.name} onChange={onEditChangeHandler} required />
+              </div>
 
+              <div className="edit-input-group">
+                <label>Description</label>
+                <textarea name="description" value={editData.description} onChange={onEditChangeHandler} rows="3" required></textarea>
+              </div>
+
+              <div className="edit-row">
+                <div className="edit-input-group">
+                  <label>Category</label>
+                  <select name="category" value={editData.category} onChange={onEditChangeHandler}>
+                    <option value="Salad">Salad</option>
+                    <option value="Rolls">Rolls</option>
+                    <option value="Deserts">Deserts</option>
+                    <option value="Sandwich">Sandwich</option>
+                    <option value="Cake">Cake</option>
+                    <option value="Pure Veg">Pure Veg</option>
+                    <option value="Pasta">Pasta</option>
+                    <option value="Noodles">Noodles</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Beverages">Beverages</option>
+                    <option value="Bread">Bread</option>
+                  </select>
+                </div>
+                <div className="edit-input-group">
+                  <label>Price (₹)</label>
+                  <input type="number" name="price" value={editData.price} onChange={onEditChangeHandler} required />
+                </div>
+              </div>
+
+              <div className="edit-input-group">
+                <label>Dietary</label>
+                <select name="veg" value={editData.veg} onChange={(e) => setEditData(prev => ({...prev, veg: e.target.value === "true"}))}>
+                  <option value="true">Vegetarian</option>
+                  <option value="false">Non-Vegetarian</option>
+                </select>
+              </div>
+
+              <button type="submit" className="btn-premium update-btn">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 

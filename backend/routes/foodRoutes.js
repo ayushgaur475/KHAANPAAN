@@ -1,5 +1,5 @@
 import express from "express";
-import { addFood , listFood, removeFood, toggleStock} from "../controllers/foodController.js";
+import { addFood , listFood, removeFood, toggleStock, updateFood} from "../controllers/foodController.js";
 import multer from 'multer';
 import adminAuth from "../middleware/adminAuth.js";
 import dotenv from 'dotenv';
@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 foodRouter.post("/add", adminAuth, upload.single("image"), addFood);
+foodRouter.post("/update", adminAuth, upload.single("image"), updateFood);
 foodRouter.get("/list",listFood)
 foodRouter.post("/remove", adminAuth, removeFood);
 foodRouter.post("/toggle-stock", adminAuth, toggleStock);

@@ -95,4 +95,36 @@ const toggleStock = async (req, res) => {
     }
 }
 
-export {addFood, listFood, removeFood, toggleStock}
+const updateFood = async (req, res) => {
+    try {
+        const { id, name, description, price, category, veg } = req.body;
+        let updateData = {
+            name,
+            description,
+            price: Number(price),
+            category,
+            veg: veg === "true" || veg === true
+        };
+
+        // Handle image update if a new file is uploaded
+        if (req.file) {
+            const filePath = `uploads/${req.file.filename}`;
+            const imageBuffer = fs.readFileSync(filePath);
+            const base64Image = `data:${req.file.mimetype};base64,${imageBuffer.toString('base64')}`;
+            updateData.image = base64Image;
+
+            // Delete temporary file
+            fs.unlink(filePath, (err) => {
+                if (err) console.log("Error deleting temp file:", err);
+            });
+        }
+
+        await foodModel.findByIdAndUpdate(id, updateData);
+        res.json({ success: true, message: "Product Updated Successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error updating product" });
+    }
+}
+
+export {addFood, listFood, removeFood, toggleStock, updateFood}
