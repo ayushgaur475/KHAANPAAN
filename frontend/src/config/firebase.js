@@ -1,8 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
-// Replace these placeholders with your actual Firebase config!
 const firebaseConfig = {
   apiKey: "AIzaSyAm-RvWThyWK-LemqmJsAeygqQRrUzy_xk",
   authDomain: "khaanpaan-7c6fb.firebaseapp.com",
@@ -14,8 +12,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
 const messaging = getMessaging(app);
 
-export { auth, googleProvider, signInWithPopup, messaging, getToken };
+export { messaging, getToken, onMessage };

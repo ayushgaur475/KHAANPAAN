@@ -15,10 +15,43 @@ import Profile from './pages/Profile/Profile'
 import { useEffect } from 'react'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { messaging, getToken, onMessage } from './config/firebase';
+import axios from 'axios';
 
 function App() {
   console.log("🚀 DEBUG: APP COMPONENT LOADED - VERSION 2.1 - FRESH BUILD");
+  const url = "https://khaanpaan-backend.onrender.com"; // Use production URL
   const [showLogin, setShowLogin] = useState(false);
+
+  const requestNotificationPermission = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        const fcmToken = await getToken(messaging, { 
+          vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko",
+          serviceWorkerRegistration: registration
+        });
+        if (fcmToken) {
+          const token = localStorage.getItem("token");
+          if (token) {
+            await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token } });
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error setting up notifications:", error);
+    }
+  };
+
+  useEffect(() => {
+    requestNotificationPermission();
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+      // Optional: Play sound or show toast here
+    });
+    return () => unsubscribe();
+  }, []);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isBannerDismissed, setIsBannerDismissed] = useState(false);
