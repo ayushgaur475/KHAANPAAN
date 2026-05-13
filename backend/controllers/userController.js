@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import guestTokenModel from "../models/guestTokenModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import validator from "validator";
@@ -302,8 +303,31 @@ const deleteAddress = async (req, res) => {
 
 const updateFcmToken = async (req, res) => {
     try {
-        const { userId, fcmToken } = req.body;
-        await userModel.findByIdAndUpdate(userId, { fcmToken });
+        const { fcmToken } = req.body;
+        const { token } = req.headers;
+        
+        let userId = null;
+        if (token) {
+            try {
+                const token_decode = jwt.verify(token, process.env.JWT_SECRET);
+                userId = token_decode.id;
+            } catch (err) {
+                console.log("Invalid token in FCM update, treating as guest");
+            }
+        }
+
+        if (userId) {
+            await userModel.findByIdAndUpdate(userId, { fcmToken });
+            console.log(`✅ Synced token for Registered User: ${userId}`);
+        } else {
+            // Save as a guest token
+            await guestTokenModel.findOneAndUpdate(
+                { fcmToken },
+                { fcmToken },
+                { upsert: true, new: true }
+            );
+            console.log(`✅ Synced token for Guest/New User`);
+        }
         res.json({ success: true, message: "FCM Token updated" });
     } catch (error) {
         console.log(error);
@@ -316,15 +340,23 @@ const broadcastNotification = async (req, res) => {
         const { title, message } = req.body;
         
         // Find all users who have a registered FCM token
-        const users = await userModel.find({ fcmToken: { $exists: true, $ne: "" } });
-        const tokens = users.map(user => user.fcmToken);
+        const registeredUsers = await userModel.find({ fcmToken: { $exists: true, $ne: "" } });
+        const guestUsers = await guestTokenModel.find({ fcmToken: { $exists: true, $ne: "" } });
+        
+        const tokens = [
+            ...registeredUsers.map(user => user.fcmToken),
+            ...guestUsers.map(guest => guest.fcmToken)
+        ];
+        
+        // Remove duplicates just in case
+        const uniqueTokens = [...new Set(tokens)];
 
-        if (tokens.length === 0) {
+        if (uniqueTokens.length === 0) {
             return res.json({ success: false, message: "No users with registered tokens found." });
         }
 
-        // Send to each token (simple approach for now, can use sendEachForMulticast for higher volume)
-        const sendPromises = tokens.map(token => 
+        // Send to each token
+        const sendPromises = uniqueTokens.map(token => 
             sendNotification(token, title, message)
         );
 

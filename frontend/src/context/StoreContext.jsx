@@ -26,9 +26,10 @@ const StoreContextProvider = (props) => {
           vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko"
         });
         
-        if (fcmToken && userToken) {
+        if (fcmToken) {
           console.log("✅ FCM Token Synced:", fcmToken);
-          await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token: userToken } });
+          // Send to backend (it handles both userToken and guest logic)
+          await axios.post(url + "/api/user/update-fcm-token", { fcmToken, userId: userToken ? null : undefined }, { headers: { token: userToken || "" } });
         }
       }
     } catch (error) {
@@ -105,8 +106,11 @@ const StoreContextProvider = (props) => {
         setToken(savedToken);
         await loadCartData(savedToken);
         await fetchUserData(savedToken);
-        // Force a notification sync attempt on every load for logged-in users
+        // Sync for logged-in user
         requestNotificationPermission(savedToken);
+      } else {
+        // NEW: Sync for guest/new user even if not logged in
+        requestNotificationPermission(null);
       }
     }
     loadData();

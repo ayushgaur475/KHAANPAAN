@@ -27,7 +27,7 @@ userRouter.post("/update", authMiddleware, upload.single("image"), updateUserInf
 userRouter.post("/google-login", googleLogin)
 userRouter.post("/add-address", authMiddleware, addAddress)
 userRouter.post("/delete-address", authMiddleware, deleteAddress)
-userRouter.post("/update-fcm-token", authMiddleware, updateFcmToken)
+userRouter.post("/update-fcm-token", updateFcmToken)
 userRouter.get("/list-users", listUsers)
 userRouter.post("/broadcast", broadcastNotification)
 
