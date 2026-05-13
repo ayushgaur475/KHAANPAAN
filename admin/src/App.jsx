@@ -25,20 +25,33 @@ function App() {
   const [adminPhoto, setAdminPhoto] = useState('');
 
   const requestAdminNotificationPermission = async (adminToken) => {
+    console.log("Checking notification permission...");
     try {
       const permission = await Notification.requestPermission();
+      console.log("Permission status:", permission);
       if (permission === 'granted') {
+        console.log("Registering Service Worker...");
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        console.log("Service Worker registered successfully.");
+
+        console.log("Attempting to get FCM Token...");
         const fcmToken = await getToken(messaging, {
-          vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko"
+          vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko",
+          serviceWorkerRegistration: registration
         });
 
         if (fcmToken) {
-          console.log("Admin FCM Token:", fcmToken);
+          console.log("✅ Admin FCM Token:", fcmToken);
           await axios.post(url + "/api/user/update-fcm-token", { fcmToken }, { headers: { token: adminToken } });
+          console.log("✅ Token sent to backend successfully.");
+        } else {
+          console.warn("⚠️ No FCM Token received. Check Firebase config.");
         }
+      } else {
+        console.warn("❌ Permission not granted. Notifications disabled.");
       }
     } catch (error) {
-      console.error("Error requesting admin notification permission:", error);
+      console.error("🔥 Error in notification setup:", error);
     }
   };
 
