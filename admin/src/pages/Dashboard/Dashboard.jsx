@@ -2,6 +2,31 @@ import React, { useEffect, useState } from 'react'
 import './Dashboard.css'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
+import { Line, Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 const Dashboard = ({ url, token }) => {
     const [stats, setStats] = useState({
@@ -10,7 +35,8 @@ const Dashboard = ({ url, token }) => {
         weekRevenue: 0,
         totalOrders: 0,
         totalUsers: 0,
-        recentOrders: []
+        recentOrders: [],
+        dailyRevenue: []
     })
 
     const fetchAnalytics = async () => {
@@ -81,6 +107,74 @@ const Dashboard = ({ url, token }) => {
                         <h3>{stats.totalUsers}</h3>
                     </div>
                     <div className="stat-icon-bg">👥</div>
+                </div>
+            </div>
+
+            <div className="charts-grid">
+                <div className="chart-container glass-card">
+                    <div className="chart-header">
+                        <h3>Revenue Trend (Last 7 Days)</h3>
+                        <p>Daily earnings performance</p>
+                    </div>
+                    <div className="chart-body">
+                        <Line 
+                            data={{
+                                labels: stats.dailyRevenue.map(d => new Date(d._id).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })),
+                                datasets: [
+                                    {
+                                        label: 'Revenue (₹)',
+                                        data: stats.dailyRevenue.map(d => d.revenue),
+                                        borderColor: '#ff4c24',
+                                        backgroundColor: 'rgba(255, 76, 36, 0.1)',
+                                        fill: true,
+                                        tension: 0.4,
+                                        pointRadius: 4,
+                                        pointBackgroundColor: '#ff4c24'
+                                    }
+                                ]
+                            }}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                                    x: { grid: { display: false } }
+                                }
+                            }}
+                        />
+                    </div>
+                </div>
+
+                <div className="chart-container glass-card">
+                    <div className="chart-header">
+                        <h3>Order Volume</h3>
+                        <p>Daily total orders</p>
+                    </div>
+                    <div className="chart-body">
+                        <Bar 
+                            data={{
+                                labels: stats.dailyRevenue.map(d => new Date(d._id).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })),
+                                datasets: [
+                                    {
+                                        label: 'Orders',
+                                        data: stats.dailyRevenue.map(d => d.orders),
+                                        backgroundColor: '#4a90e2',
+                                        borderRadius: 8
+                                    }
+                                ]
+                            }}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                                    x: { grid: { display: false } }
+                                }
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
 

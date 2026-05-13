@@ -1,58 +1,119 @@
+/* Charts Section */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.chart-container {
+    padding: 25px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-header {
+    margin-bottom: 20px;
+}
+
+.chart-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.chart-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.chart-body {
+    flex: 1;
+    min-height: 0;
+}
+
+@media (max-width: 1100px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .dashboard {
-    width: 100%;
     padding: 30px;
-    background-color: var(--bg-color);
+    background: var(--bg-color);
+    min-height: 100vh;
 }
 
 .dashboard-header {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .dashboard-header h2 {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
     color: var(--text-main);
 }
 
 .dashboard-header p {
     color: var(--text-muted);
-    margin-top: 5px;
+    font-size: 16px;
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
     margin-bottom: 40px;
 }
 
 .stat-card {
     background: var(--surface-color);
     padding: 25px;
-    border-radius: 15px;
+    border-radius: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
 }
 
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+}
+
+.stat-card.revenue::before { background: #ff4c24; }
+.stat-card.today::before { background: #4caf50; }
+.stat-card.week::before { background: #2196f3; }
+.stat-card.orders::before { background: #ff9800; }
+.stat-card.users::before { background: #9c27b0; }
+
 .stat-info p {
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     margin-bottom: 8px;
 }
 
 .stat-info h3 {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 28px;
+    font-weight: 800;
     color: var(--text-main);
 }
 
@@ -61,18 +122,11 @@
     opacity: 0.8;
 }
 
-/* Card Specific Colors */
-.stat-card.revenue { border-left: 5px solid #ff4c24; }
-.stat-card.today { border-left: 5px solid #4caf50; }
-.stat-card.week { border-left: 5px solid #2196f3; }
-.stat-card.orders { border-left: 5px solid #ff9800; }
-.stat-card.users { border-left: 5px solid #9c27b0; }
-
 .recent-activity {
     background: var(--surface-color);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: var(--shadow-md);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: var(--shadow-lg);
     border: 1px solid var(--border-color);
 }
 
@@ -80,56 +134,51 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .activity-header h3 {
     font-size: 20px;
+    font-weight: 700;
     color: var(--text-main);
 }
 
 .refresh-btn {
-    padding: 8px 18px;
-    background: #ff4c24;
-    color: white;
-    border: none;
-    border-radius: 8px;
+    padding: 10px 20px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 13px;
     transition: 0.3s;
 }
 
 .refresh-btn:hover {
-    background: #e04320;
+    background: var(--border-color);
 }
 
 .activity-table {
-    display: flex;
-    flex-direction: column;
-}
-
-.table-header, .table-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    padding: 15px 10px;
-    align-items: center;
+    width: 100%;
 }
 
 .table-header {
-    font-weight: 600;
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 1fr 1fr;
+    padding: 15px 0;
+    border-bottom: 2px solid var(--bg-color);
     color: var(--text-muted);
-    border-bottom: 2px solid var(--border-color);
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .table-row {
-    border-bottom: 1px solid var(--border-color);
-    font-size: 14px;
-    color: var(--text-main);
-}
-
-.table-row:last-child {
-    border-bottom: none;
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 1fr 1fr;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--bg-color);
+    align-items: center;
 }
 
 .user-name-bold {
@@ -137,39 +186,20 @@
     color: var(--text-main);
 }
 
-.items-text {
-    color: var(--text-muted);
-    font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-right: 15px;
+.amount {
+    font-weight: 700;
+    color: #4caf50;
 }
-.amount { font-weight: 600; color: var(--text-main); }
 
 .status-pill {
-    padding: 5px 12px;
+    padding: 6px 12px;
     border-radius: 50px;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
     width: fit-content;
-    text-align: center;
 }
 
-.status-pill.order-placed { background: #e3f2fd; color: #1976d2; }
-.status-pill.delivered { background: #e8f5e9; color: #2e7d32; }
-.status-pill.preparing { background: #fff3e0; color: #ef6c00; }
-
-.no-data {
-    text-align: center;
-    padding: 30px;
-    color: #999;
-}
-
-@media (max-width: 768px) {
-    .table-header { display: none; }
-    .table-row {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-}
+.status-pill.food-processing { background: rgba(33, 150, 243, 0.1); color: #2196f3; }
+.status-pill.out-for-delivery { background: rgba(255, 152, 0, 0.1); color: #ff9800; }
+.status-pill.delivered { background: rgba(76, 175, 80, 0.1); color: #4caf50; }

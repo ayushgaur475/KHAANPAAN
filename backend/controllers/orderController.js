@@ -273,6 +273,19 @@ const getAnalytics = async (req, res) => {
 
         const revenueData = revenueAggregation[0] || { totalRevenue: 0, todayRevenue: 0, weekRevenue: 0 };
 
+        // 4. Get Daily Revenue for Charts (last 7 days)
+        const dailyRevenue = await orderModel.aggregate([
+            { $match: { payment: true, date: { $gte: startOfWeek } } },
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                    revenue: { $sum: "$amount" },
+                    orders: { $sum: 1 }
+                }
+            },
+            { $sort: { "_id": 1 } }
+        ]);
+
         res.json({
             success: true,
             totalRevenue: revenueData.totalRevenue,
@@ -280,7 +293,8 @@ const getAnalytics = async (req, res) => {
             weekRevenue: revenueData.weekRevenue,
             totalOrders,
             totalUsers,
-            recentOrders
+            recentOrders,
+            dailyRevenue
         });
     } catch (error) {
         console.log(error);
