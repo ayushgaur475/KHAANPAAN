@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { food_list as local_food_list } from "../assets/assets";
-import { messaging, getToken } from "../config/firebase";
+import { messaging, getToken, onMessage } from "../config/firebase";
+import { toast } from 'react-toastify';
 
 export const StoreContext = createContext(null);
 
@@ -98,7 +99,7 @@ const StoreContextProvider = (props) => {
     setCartItems(response.data.cartData || {});
   }
 
-  useEffect( () => {
+  useEffect(() => {
     async function loadData() {
       await fetchFoodList();
       if(localStorage.getItem("token")){
@@ -109,12 +110,23 @@ const StoreContextProvider = (props) => {
         // Sync for logged-in user
         requestNotificationPermission(savedToken);
       } else {
-        // NEW: Sync for guest/new user even if not logged in
+        // Sync for guest/new user even if not logged in
         requestNotificationPermission(null);
       }
     }
     loadData();
-  },[])
+
+    // Listen for foreground notifications
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log("🔥 Foreground Message:", payload);
+      toast.info(`${payload.notification.title}: ${payload.notification.body}`, {
+        icon: "🔔",
+        position: "top-center"
+      });
+    });
+
+    return () => unsubscribe();
+  }, [])
 
   const contextValue = {
     food_list,
