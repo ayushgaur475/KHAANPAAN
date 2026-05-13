@@ -16,12 +16,14 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  const notificationTitle = payload.notification.title || "KhaanPaan";
+  
+  // Use data fields for the notification to avoid double messages
+  const notificationTitle = payload.data.title || "KhaanPaan";
   const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/logo192.png',
-    image: payload.notification.image || '/header_img.png',
-    badge: '/favicon.png', // Try favicon for a smaller, simpler badge
+    body: payload.data.body || "",
+    icon: payload.data.icon || '/logo192.png',
+    image: payload.data.image || '/header_img.png',
+    badge: payload.data.badge || '/favicon.png',
     tag: 'khaanpaan-notification',
     renotify: true,
     data: payload.data

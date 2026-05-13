@@ -120,9 +120,12 @@ const StoreContextProvider = (props) => {
     // Listen for foreground notifications
     const unsubscribe = onMessage(messaging, (payload) => {
       console.log("🔥 Foreground Message:", payload);
-      const iconUrl = payload.data?.icon || payload.notification?.icon || '/logo192.png';
+      const data = payload.data || {};
+      const title = data.title || "KhaanPaan";
+      const body = data.body || "";
+      const iconUrl = data.icon || '/logo192.png';
       
-      toast.info(`${payload.notification.title}: ${payload.notification.body}`, {
+      toast.info(`${title}: ${body}`, {
         icon: () => <img src={iconUrl} style={{ width: '25px', borderRadius: '4px' }} alt="" />,
         position: "top-center",
         autoClose: 5000
