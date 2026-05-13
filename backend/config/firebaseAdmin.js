@@ -37,8 +37,8 @@ export const sendNotification = async (fcmToken, title, body) => {
         icon: 'https://khaanpaan-frontend.vercel.app/logo192.png',
         badge: 'https://khaanpaan-frontend.vercel.app/favicon.png',
         image: 'https://khaanpaan-frontend.vercel.app/header_img.png',
-        tag: 'khaanpaan-broadcast',
-        renotify: true
+        tag: 'khaanpaan-main',
+        renotify: false
       }
     },
     data: {

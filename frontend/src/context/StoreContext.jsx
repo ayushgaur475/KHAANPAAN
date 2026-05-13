@@ -21,8 +21,9 @@ const StoreContextProvider = (props) => {
     try {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
-        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-        await registration.update(); // FORCE UPDATE TO CLEAR CACHE
+        // Add a query string (?v=...) to force the browser to download the NEW service worker immediately
+        const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js?v=2');
+        await registration.update(); 
         await navigator.serviceWorker.ready;
         const fcmToken = await getToken(messaging, { 
           vapidKey: "BB-3hzSp7qof1IbETD-yTRzLaNvwS_3U5HEfJINPZa5yihG5gpCyBP7_uV92JQjaqvvhtgVm11pDbd7gynFPeko"
