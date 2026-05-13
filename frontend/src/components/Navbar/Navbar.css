@@ -194,11 +194,19 @@
 }
 
 .nav-profile-img {
-    width: 30px !important;
-    height: 30px !important;
+    width: 32px !important;
+    height: 32px !important;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #ff4c24;
+    box-shadow: 0 0 10px rgba(255, 76, 36, 0.2);
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.nav-profile-img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 76, 36, 0.4);
 }
 
 .nav-profile-dropdown {

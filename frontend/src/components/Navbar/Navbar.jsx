@@ -67,7 +67,12 @@ function Navbar({setShowLogin, theme, toggleTheme}) {
               <span className="coin-balance">{userData.coins} KP</span>
             </div>
             <div className='navbar-profile'>
-              <img src={userData.photo ? (userData.photo.startsWith('http') ? userData.photo : `${url}/images/${userData.photo}`) : assets.profile_icon} alt="Profile" className="nav-profile-img"></img>
+              <img 
+                src={userData.photo ? (userData.photo.startsWith('http') ? userData.photo : `${url}/images/${userData.photo}`) : assets.profile_icon} 
+                alt="Profile" 
+                className="nav-profile-img"
+                onError={(e) => { e.target.onerror = null; e.target.src = assets.profile_icon; }}
+              />
               <ul className='nav-profile-dropdown'>
                 <li onClick={() => navigate('/profile')}><img src={assets.profile_icon}></img><p>Profile</p></li>
                 <hr></hr>
