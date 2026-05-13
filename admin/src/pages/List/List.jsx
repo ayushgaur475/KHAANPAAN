@@ -13,7 +13,6 @@ function List({url, token}) {
 
   const fetchList = async() => {
     const response = await axios.get(`${url}/api/food/list`);
-    console.log(response.data);
     if(response.data.success){
       setList(response.data.data);
     }
@@ -32,6 +31,7 @@ function List({url, token}) {
       toast.error("Error")
      }
   }
+
   const toggleStock = async(foodId) => {
     const response = await axios.post(`${url}/api/food/toggle-stock`, {id: foodId}, {headers:{token}});
     if(response.data.success){
@@ -92,6 +92,7 @@ function List({url, token}) {
   useEffect(() => {
     fetchList();
   }, [])
+
   return (
     <div className='list-page'>
       <div className="list-container glass-card">
@@ -118,7 +119,7 @@ function List({url, token}) {
                   <div className="item-img-container">
                     <img
                       src={
-                        typeof item.image === 'string' && (item.image.startsWith('http') || item.image.startsWith('/src/assets') || item.image.startsWith('data:')) 
+                        typeof item.image === 'string' && (item.image.startsWith('http') || item.image.startsWith('data:')) 
                         ? item.image 
                         : url + "/images/" + item.image
                       }
@@ -169,10 +170,9 @@ function List({url, token}) {
           </div>
         </div>
       </div>
-    </div>
 
       {/* Edit Product Modal */}
-      {showEdit && (
+      {showEdit && editData && (
         <div className="edit-modal-overlay">
           <div className="edit-modal glass-card">
             <div className="modal-header">
@@ -182,7 +182,7 @@ function List({url, token}) {
             <form onSubmit={onUpdateHandler} className="edit-form">
               <div className="edit-img-section">
                 <label htmlFor="new-image">
-                  <img src={newImage ? URL.createObjectURL(newImage) : (editData.image.startsWith('http') ? editData.image : url + "/images/" + editData.image)} alt="Preview" />
+                  <img src={newImage ? URL.createObjectURL(newImage) : (editData.image.startsWith('http') || editData.image.startsWith('data:') ? editData.image : url + "/images/" + editData.image)} alt="Preview" />
                   <div className="img-edit-hint">Change Image</div>
                 </label>
                 <input type="file" id="new-image" hidden onChange={(e) => setNewImage(e.target.files[0])} />
