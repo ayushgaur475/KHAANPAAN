@@ -5,6 +5,7 @@ import validator from "validator";
 import nodemailer from "nodemailer";
 import { Resend } from "resend";
 import fs from 'fs';
+import { sendNotification } from "../config/firebaseAdmin.js";
 
 // login user
 const loginUser = async (req, res) => {
@@ -297,7 +298,7 @@ const deleteAddress = async (req, res) => {
     }
 }
 
-import { sendNotification } from "../config/firebaseAdmin.js";
+
 
 const updateFcmToken = async (req, res) => {
     try {
