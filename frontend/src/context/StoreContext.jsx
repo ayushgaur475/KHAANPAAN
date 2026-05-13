@@ -1,8 +1,9 @@
 import { createContext, useEffect, useState } from "react";
-export const StoreContext = createContext(null);
 import axios from "axios";
 import { food_list as local_food_list } from "../assets/assets";
 import { messaging, getToken } from "../config/firebase";
+
+export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   console.log("🚀 DEBUG: STORE CONTEXT LOADED - VERSION 2.1 - NOTIFICATIONS READY");
