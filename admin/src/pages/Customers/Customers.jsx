@@ -36,9 +36,32 @@ const Customers = ({ url }) => {
   return (
     <div className='customers-page'>
       <div className="customers-header">
-        <h2>Customer Management</h2>
-        <p>Monitor all registered users on KhaanPaan</p>
-        <button onClick={fetchUsers} className="refresh-btn">Refresh List</button>
+        <div className="header-info">
+          <h2>Customer Management</h2>
+          <p>Monitor and manage all registered users on KhaanPaan</p>
+        </div>
+        <button onClick={fetchUsers} className="refresh-btn premium-btn">
+          <span>🔄 Refresh List</span>
+        </button>
+      </div>
+
+      <div className="customers-stats-row">
+        <div className="stats-card glass-card">
+          <div className="stats-icon">👥</div>
+          <div className="stats-data">
+            <span className="stats-label">Total Customers</span>
+            <span className="stats-value">{users.length}</span>
+          </div>
+          <div className="stats-badge">Active Users</div>
+        </div>
+        <div className="stats-card glass-card">
+          <div className="stats-icon">💰</div>
+          <div className="stats-data">
+            <span className="stats-label">Total Coins Issued</span>
+            <span className="stats-value">{users.reduce((acc, user) => acc + (user.coins || 0), 0)}</span>
+          </div>
+          <div className="stats-badge secondary">KP Ecosystem</div>
+        </div>
       </div>
 
       {loading ? (
