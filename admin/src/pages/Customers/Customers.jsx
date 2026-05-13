@@ -11,7 +11,13 @@ const Customers = ({ url }) => {
     try {
       const response = await axios.get(`${url}/api/user/list-users`);
       if (response.data.success) {
-        setUsers(response.data.data);
+        // Sorting logic: Admin first, then alphabetically by name
+        const sortedUsers = response.data.data.sort((a, b) => {
+          if (a.role === 'admin') return -1;
+          if (b.role === 'admin') return 1;
+          return a.name.localeCompare(b.name);
+        });
+        setUsers(sortedUsers);
       } else {
         toast.error("Error fetching users");
       }
@@ -83,7 +89,10 @@ const Customers = ({ url }) => {
                   alt="" 
                   onError={(e) => { e.target.src = "https://img.icons8.com/ios-filled/50/ff4c24/user-male-circle.png" }}
                 />
-                <span className="user-name">{user.name}</span>
+                <span className="user-name">
+                  {user.name}
+                  {user.role === 'admin' && <span className="admin-tag">👑 Admin</span>}
+                </span>
               </div>
               <span className="user-email">{user.email}</span>
               <span className="user-phone">{user.phone || "—"}</span>
