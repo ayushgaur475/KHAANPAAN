@@ -19,9 +19,11 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: payload.notification.icon || '/logo192.png',
+    icon: '/logo192.png',
     image: payload.notification.image || '/header_img.png',
     badge: '/logo192.png',
+    tag: 'khaanpaan-notification',
+    renotify: true,
     data: payload.data
   };
 
