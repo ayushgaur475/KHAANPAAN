@@ -13,6 +13,7 @@ import menu_8 from './menu_8.png'
 import menu_9 from './menu_9.png'
 import menu_10 from './menu_10.png'
 import menu_11 from './menu_11.png'
+import menu_12 from './menu_12.svg'
 
 import food_1 from './food_1.png'
 import food_2 from './food_2.png'
@@ -108,7 +109,7 @@ export const menu_list = [
     },
     {
         menu_name: "Biryani",
-        menu_image: biryani_category
+        menu_image: menu_12
     },
     {
         menu_name: "Salad",
