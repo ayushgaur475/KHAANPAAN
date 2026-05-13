@@ -34,7 +34,14 @@ export const sendNotification = async (fcmToken, title, body) => {
         badge: 'https://khaanpaan-frontend.vercel.app/logo192.png',
         image: 'https://khaanpaan-frontend.vercel.app/header_img.png',
         tag: 'khaanpaan-order',
-        renotify: true
+        renotify: true,
+        actions: [
+          {
+            action: 'open_url',
+            title: 'Order Now',
+            icon: 'https://khaanpaan-frontend.vercel.app/logo192.png'
+          }
+        ]
       }
     },
     data: {
