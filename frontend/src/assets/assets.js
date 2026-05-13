@@ -76,6 +76,7 @@ import bag_icon from './bag_icon.png'
 import logout_icon from './logout_icon.png'
 import parcel_icon from './parcel_icon.png'
 import login_bg from './login_bg.png'
+import biryani_category from './biryani_category.png'
 
 export const assets = {
     logo,
@@ -107,7 +108,7 @@ export const menu_list = [
     },
     {
         menu_name: "Biryani",
-        menu_image: "https://img.icons8.com/color/96/biryani.png"
+        menu_image: biryani_category
     },
     {
         menu_name: "Salad",
