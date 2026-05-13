@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Marketing.css'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -7,6 +7,14 @@ const Marketing = ({ url }) => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -37,17 +45,56 @@ const Marketing = ({ url }) => {
       </div>
 
       <div className="marketing-card glass-card">
-        <div className="preview-mobile">
-          <div className="status-bar">9:41</div>
-          <div className="notification-preview">
-            <div className="notif-header">
-              <span className="app-name">🍕 KhaanPaan</span>
-              <span className="time">now</span>
+        <div className="preview-mobile-wrapper">
+          <div className="preview-mobile">
+            {/* Dynamic Island */}
+            <div className="dynamic-island"></div>
+            
+            {/* Status Bar */}
+            <div className="status-bar-container">
+              <div className="status-time">{currentTime}</div>
+              <div className="status-icons">
+                <span className="wifi">📶</span>
+                <span className="battery">🔋</span>
+              </div>
             </div>
-            <div className="notif-content">
-              <strong>{title || "Your Title Here"}</strong>
-              <p>{message || "Your promotional message will appear here..."}</p>
+
+            {/* Notification Preview */}
+            <div className="notification-preview">
+              <div className="notif-header">
+                <div className="app-info">
+                  <img src="https://khaanpaan-frontend.vercel.app/logo192.png" alt="logo" className="small-logo" />
+                  <span className="app-name">KhaanPaan</span>
+                </div>
+                <span className="time">now</span>
+              </div>
+              <div className="notif-content">
+                <strong>{title || "Your Title Here"}</strong>
+                <p>{message || "Your promotional message will appear here..."}</p>
+              </div>
             </div>
+
+            {/* Virtual Home Screen Apps */}
+            <div className="home-screen-apps">
+              <div className="app-icon khaanpaan-app pulse">
+                <img src="https://khaanpaan-frontend.vercel.app/logo192.png" alt="KhaanPaan" />
+                <span>KhaanPaan</span>
+              </div>
+              <div className="app-icon dummy">
+                <div className="icon-circle">📷</div>
+                <span>Photos</span>
+              </div>
+              <div className="app-icon dummy">
+                <div className="icon-circle">💬</div>
+                <span>Chat</span>
+              </div>
+              <div className="app-icon dummy">
+                <div className="icon-circle">🗺️</div>
+                <span>Maps</span>
+              </div>
+            </div>
+            
+            <div className="home-indicator"></div>
           </div>
         </div>
 
