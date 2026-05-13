@@ -19,7 +19,10 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/logo.png'
+    icon: payload.notification.icon || '/logo192.png',
+    image: payload.notification.image || '/header_img.png',
+    badge: '/logo192.png',
+    data: payload.data
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
